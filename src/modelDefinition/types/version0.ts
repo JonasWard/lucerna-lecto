@@ -23,15 +23,6 @@ const viewportParameters: SingleLevelContentType[] = [
   DataEntryFactory.createFloat(0, -1000, 1000, 1, AttributeNames.Radius),
 ];
 
-const colorArray: ArrayEntryDataType = [
-  [2, 10],
-  [
-    DataEntryFactory.createInt(255, 0, 255, AttributeNames.R),
-    DataEntryFactory.createInt(0, 0, 255, AttributeNames.G),
-    DataEntryFactory.createInt(0, 0, 255, AttributeNames.B),
-  ],
-];
-
 const baseExtrusionDefinition: NonEmptyValidEntryArrayType = [
   DataEntryFactory.createFloat(0.25, 0.1, 0.5, 2, AttributeNames.InsetTop),
   DataEntryFactory.createFloat(0.25, 0.1, 0.5, 2, AttributeNames.InsetBottom),
