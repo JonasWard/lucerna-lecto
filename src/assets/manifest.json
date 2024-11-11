@@ -1,0 +1,25 @@
+{
+  "short_name": "Lucerna Lecto",
+  "name": "Your Lamp Shade Configurator",
+  "icons": [
+    {
+      "src": "b-w.ico",
+      "sizes": "256x256",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "b-w-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "b-w-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
