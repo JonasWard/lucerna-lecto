@@ -70,7 +70,7 @@ export const App: React.FC = () => {
 
   return (
     <>
-      <ThreeCanvas renderData={renderData as any as Version0Type} canvasRef={canvasRef} updateEntry={updateEntry} />
+      <ThreeCanvas renderData={renderData as any as Version0Type} canvasRef={canvasRef} />
       <ParametricInput data={data} updateEntry={updateEntry} versionEnumSemantics={version0EnumSemantics} />
       <Button style={{ position: 'fixed', top: '15px', right: '15px' }} onClick={downloadPNG}>
         <LiaFileDownloadSolid style={{ position: 'absolute', width: 20, height: 20 }} size={16} />

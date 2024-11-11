@@ -56,7 +56,7 @@ const squareDefinition: NonEmptyValidEntryArrayType = [DataEntryFactory.createFl
 const gridDefinitions: NonEmptyValidEntryArrayType = [
   DataEntryFactory.createFloat(20, 8, 120, 0, AttributeNames.Size),
   DataEntryFactory.createInt(3, 1, 16, AttributeNames.XCount),
-  DataEntryFactory.createInt(0, 0, 8, AttributeNames.YCount),
+  DataEntryFactory.createInt(3, 1, 16, AttributeNames.YCount),
   DataEntryFactory.createEnum(0, 3, AttributeNames.ShellThickness),
   DataEntryFactory.createFloat(2, 0, 10, 1, AttributeNames.BufferInside),
   DataEntryFactory.createFloat(2, 0, 10, 1, AttributeNames.BufferOutside),
