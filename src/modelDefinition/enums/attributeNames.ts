@@ -87,4 +87,6 @@ export enum AttributeNames {
   ShapePostProcessing = 'Shape Post Processing',
   Material = 'Material',
   Settings = 'Settings',
+  Wireframe = 'Wireframe',
+  LampShades = 'Lamp Shades',
 }

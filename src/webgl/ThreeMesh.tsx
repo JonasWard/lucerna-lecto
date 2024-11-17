@@ -1,28 +1,27 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Version0Type } from '../modelDefinition/types/version0.generatedType';
-import { getMaterialColor, getVertexData } from './geometry/factory';
+import { getMaterialColor, getVertexData, isWireframe } from './geometry/factory';
+import { BufferAttribute, BufferGeometry, Mesh, MeshBasicMaterial, MeshPhongMaterial, MeshStandardMaterial } from 'three';
 
 export const ThreeMesh: React.FC<{ data: Version0Type }> = ({ data }) => {
-  const vertexData = getVertexData(data);
-
-  console.log(vertexData);
-
+  const meshRef = useRef<Mesh | null>(null);
   const color = getMaterialColor(data);
-  console.log(color);
 
-  return (
-    <mesh>
-      <bufferGeometry>
-        <bufferAttribute attach='attributes-position' count={vertexData.positions.length / 3} array={vertexData.positions} itemSize={3} />
-        {/* <bufferAttribute attach='attributes-uv' count={vertexData.uvs.length / 2} array={vertexData.uvs} itemSize={2} /> */}
-        {/* <bufferAttribute attach='indices' count={vertexData.indices.length / 3} array={vertexData.indices} itemSize={3} /> */}
-      </bufferGeometry>
-      {/* <bufferGeometry>
-        <bufferAttribute attach='attributes-position' count={boilerPlateData.positions.length / 3} array={boilerPlateData.positions} itemSize={3} />
-        <bufferAttribute attach='attributes-uv' count={boilerPlateData.uvs.length / 3} array={boilerPlateData.uvs} itemSize={2} />
-        <bufferAttribute attach='indices' count={boilerPlateData.indices.length / 3} array={vertexData.indices} itemSize={3} />
-      </bufferGeometry> */}
-      <meshStandardMaterial color={color} side={2} />
-    </mesh>
-  );
+  useEffect(() => {
+    if (meshRef.current) {
+      const vertexData = getVertexData(data);
+      meshRef.current.material = new MeshPhongMaterial({ color, side: 0, wireframe: isWireframe(data) });
+      const bufferGeometry = new BufferGeometry();
+      bufferGeometry.setIndex(vertexData.indices);
+      bufferGeometry.attributes['position'] = new BufferAttribute(vertexData.positions, 3);
+      bufferGeometry.computeVertexNormals();
+      bufferGeometry.attributes['normal'] = new BufferAttribute(
+        bufferGeometry.attributes['normal'].array.map((v) => -v),
+        3
+      );
+      meshRef.current.geometry = bufferGeometry;
+    }
+  }, [data]);
+
+  return <mesh ref={meshRef}></mesh>;
 };

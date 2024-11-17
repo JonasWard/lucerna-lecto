@@ -8,7 +8,8 @@ import { EnumSemantics, StateDataType } from 'url-safe-bitpacking/dist/types';
 const displayTypeMap = {
   [AttributeNames.Version]: import.meta.env.DEV ? (shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER) : DisplayType.HIDDEN,
   [AttributeNames.Viewport]: import.meta.env.DEV ? (shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER) : DisplayType.HIDDEN,
-  [AttributeNames.Extrusion]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
+  [AttributeNames.LampShades]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
+  [AttributeNames.MainMethods]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
   [AttributeNames.Footprint]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
   [AttributeNames.Heights]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
   [AttributeNames.Base]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,

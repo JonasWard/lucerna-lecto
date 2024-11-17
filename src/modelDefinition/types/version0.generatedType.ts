@@ -1,4 +1,5 @@
 import { DataType } from 'url-safe-bitpacking';
+import { AttributeNames } from '../enums/attributeNames';
 
 type ColorType = {
   ['R']: { value: number; name: 'R'; type: DataType.INT; min: 0; max: 255; bits: 8 };
@@ -308,71 +309,82 @@ export type Version0Type = {
     ['Camera Angle']: { value: number; name: 'Camera Angle'; type: DataType.FLOAT; min: -180; max: 180; precision: 1; significand: 12 };
     ['Radius']: { value: number; name: 'Radius'; type: DataType.FLOAT; min: -1000; max: 1000; precision: 1; significand: 15 };
   };
-  ['Extrusion']:
+  ['Lamp Shades']:
     | {
-        s: { value: 0; name: 'Extrusion'; type: DataType.ENUM; max: 4; bits: 3 };
-        v: ExtrusionSquareValue;
-      }
-    | {
-        s: { value: 1; name: 'Extrusion'; type: DataType.ENUM; max: 4; bits: 3 };
-        v: ExtrusionArcValue;
-      }
-    | {
-        s: { value: 2; name: 'Extrusion'; type: DataType.ENUM; max: 4; bits: 3 };
-        v: ExtrusionEllipseValue;
-      }
-    | {
-        s: { value: 3; name: 'Extrusion'; type: DataType.ENUM; max: 4; bits: 3 };
-        v: ExtrusionGothicValue;
-      }
-    | {
-        s: { value: 4; name: 'Extrusion'; type: DataType.ENUM; max: 4; bits: 3 };
-        v: ExtrusionNestedValue;
-      };
-  ['Footprint']:
-    | {
-        s: { value: 0; name: 'Footprint'; type: DataType.ENUM; max: 5; bits: 3 };
-        v: FootprintSquare;
-      }
-    | {
-        s: { value: 1; name: 'Footprint'; type: DataType.ENUM; max: 5; bits: 3 };
-        v: FootprintGridType;
-      }
-    | {
-        s: { value: 2; name: 'Footprint'; type: DataType.ENUM; max: 5; bits: 3 };
-        v: FootprintGridType;
-      }
-    | {
-        s: { value: 3; name: 'Footprint'; type: DataType.ENUM; max: 5; bits: 3 };
-        v: FootprintGridType;
-      }
-    | {
-        s: { value: 4; name: 'Footprint'; type: DataType.ENUM; max: 5; bits: 3 };
-        v: FootprintCylinderType;
-      }
-    | {
-        s: { value: 5; name: 'Footprint'; type: DataType.ENUM; max: 5; bits: 3 };
-        v: FootprintMalculmiusOne;
-      };
-  ['Heights']: {
-    ['Total Height']: { value: number; name: 'Total Height'; type: DataType.FLOAT; min: 50; max: 300; precision: 0; significand: 8 };
-    ['Story Count']: { value: number; name: 'Story Count'; type: DataType.INT; min: 1; max: 20; bits: 5 };
-    ['Height Processing Method']:
-      | {
-          s: { value: 0; name: 'Height Processing Method'; type: DataType.ENUM; max: 1; bits: 1 };
-          v: HeightsIncrementalType;
-        }
-      | {
-          s: { value: 1; name: 'Height Processing Method'; type: DataType.ENUM; max: 1; bits: 1 };
-          v: HeightsSineType;
-        }
-      | {
-          s: { value: 2; name: 'Height Processing Method'; type: DataType.ENUM; max: 1; bits: 1 };
-          v: {};
+        s: { value: 0; name: 'Lamp Shades'; type: DataType.ENUM; max: 2; bits: 2 };
+        v: {
+          ['h']: { value: number; name: 'h'; type: DataType.FLOAT; min: 40; max: 200; precision: 1; significand: 11 };
+          ['inset']: { value: number; name: 'inset'; type: DataType.INT; min: 5; max: 50; bits: 6 };
+          ['h-base']: { value: number; name: 'h-base'; type: DataType.INT; min: 5; max: 50; bits: 6 };
+          ['w']: { value: number; name: 'w'; type: DataType.FLOAT; min: 30; max: 150; precision: 1; significand: 11 };
+          ['d']: { value: number; name: 'd'; type: DataType.FLOAT; min: 30; max: 150; precision: 1; significand: 11 };
+          ['edgeSmoothing']: { value: number; name: 'edgeSmoothing'; type: DataType.FLOAT; min: 0; max: 1; precision: 2; significand: 7 };
         };
+      }
+    | {
+        s: { value: 1; name: 'Lamp Shades'; type: DataType.ENUM; max: 2; bits: 2 };
+        v: {
+          ['h']: { value: number; name: 'h'; type: DataType.FLOAT; min: 0; max: 1; precision: 2; significand: 7 };
+          ['inset']: { value: number; name: 'inset'; type: DataType.INT; min: 1; max: 10; bits: 4 };
+          ['h-base']: { value: number; name: 'h-base'; type: DataType.INT; min: 1; max: 32; bits: 5 };
+          ['r0']: { value: number; name: 'r0'; type: DataType.FLOAT; min: 30; max: 150; precision: 1; significand: 11 };
+          ['r1']: { value: number; name: 'r1'; type: DataType.FLOAT; min: 30; max: 150; precision: 1; significand: 11 };
+        };
+      }
+    | {
+        s: { value: 2; name: 'Lamp Shades'; type: DataType.ENUM; max: 2; bits: 2 };
+        v: {
+          ['h']: { value: number; name: 'h'; type: DataType.FLOAT; min: 0; max: 1; precision: 2; significand: 7 };
+          ['inset']: { value: number; name: 'inset'; type: DataType.INT; min: 1; max: 10; bits: 4 };
+          ['h-base']: { value: number; name: 'h-base'; type: DataType.INT; min: 1; max: 32; bits: 5 };
+          ['w']: { value: number; name: 'w'; type: DataType.FLOAT; min: 30; max: 150; precision: 1; significand: 11 };
+          ['d']: { value: number; name: 'd'; type: DataType.FLOAT; min: 30; max: 150; precision: 1; significand: 11 };
+        };
+      };
+  ['Main Methods']:
+    | {
+        s: { value: 1; name: 'Main Methods'; type: DataType.INT; min: 1; max: 3; bits: 2 };
+        v: [
+          {
+            ['MainMethodEnum']: { value: number; name: 'MainMethodEnum'; type: DataType.ENUM; max: 5; bits: 3 };
+            ['MethodScale']: { value: number; name: 'MethodScale'; type: DataType.FLOAT; min: 0.001; max: 1000; precision: 3; significand: 20 };
+          }
+        ];
+      }
+    | {
+        s: { value: 2; name: 'Main Methods'; type: DataType.INT; min: 1; max: 3; bits: 2 };
+        v: [
+          {
+            ['MainMethodEnum']: { value: number; name: 'MainMethodEnum'; type: DataType.ENUM; max: 5; bits: 3 };
+            ['MethodScale']: { value: number; name: 'MethodScale'; type: DataType.FLOAT; min: 0.001; max: 1000; precision: 3; significand: 20 };
+          },
+          {
+            ['MainMethodEnum']: { value: number; name: 'MainMethodEnum'; type: DataType.ENUM; max: 5; bits: 3 };
+            ['MethodScale']: { value: number; name: 'MethodScale'; type: DataType.FLOAT; min: 0.001; max: 1000; precision: 3; significand: 20 };
+          }
+        ];
+      }
+    | {
+        s: { value: 3; name: 'Main Methods'; type: DataType.INT; min: 1; max: 3; bits: 2 };
+        v: [
+          {
+            ['MainMethodEnum']: { value: number; name: 'MainMethodEnum'; type: DataType.ENUM; max: 5; bits: 3 };
+            ['MethodScale']: { value: number; name: 'MethodScale'; type: DataType.FLOAT; min: 0.001; max: 1000; precision: 3; significand: 20 };
+          },
+          {
+            ['MainMethodEnum']: { value: number; name: 'MainMethodEnum'; type: DataType.ENUM; max: 5; bits: 3 };
+            ['MethodScale']: { value: number; name: 'MethodScale'; type: DataType.FLOAT; min: 0.001; max: 1000; precision: 3; significand: 20 };
+          },
+          {
+            ['MainMethodEnum']: { value: number; name: 'MainMethodEnum'; type: DataType.ENUM; max: 5; bits: 3 };
+            ['MethodScale']: { value: number; name: 'MethodScale'; type: DataType.FLOAT; min: 0.001; max: 1000; precision: 3; significand: 20 };
+          }
+        ];
+      };
+  ['Material']: {
+    ['Wireframe']: { value: boolean; name: 'Wireframe'; type: DataType.BOOLEAN };
+    ['subDivisions']: { value: number; name: 'subDivisions'; type: DataType.INT; min: 0; max: 5; bits: 3 };
+    ['smoothing']: { value: number; name: 'smoothing'; type: DataType.FLOAT; min: 0; max: 1; precision: 3; significand: 10 };
+    ['color']: ColorType;
   };
-  ['Base']: {
-    ['Base Height']: { value: number; name: 'Base Height'; type: DataType.FLOAT; min: 50; max: 250; precision: 1; significand: 11 };
-  };
-  ['Material']: { color: ColorType };
 };

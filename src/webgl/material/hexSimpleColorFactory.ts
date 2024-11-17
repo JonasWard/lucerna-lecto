@@ -1,10 +1,7 @@
 import { SimpleColor } from '../geometry/helpers/simpleColor';
-import { VoxelState } from '../geometry/voxelComplex/types/voxelState';
-import { maxStateSize } from '../geometry/voxelComplex/voxelComplex.states';
 import { PLASMA } from './colors/plasma';
 import { TWILIGHT } from './colors/twilight';
 import { VIRIDIS } from './colors/viridis';
-import { MaterialOptions } from './material';
 
 export enum MaterialUUIDColorStates {
   RED = 'Red',

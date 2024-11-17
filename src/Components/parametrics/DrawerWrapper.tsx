@@ -17,9 +17,8 @@ export const DrawerWrapper: React.FC<IDrawerWrapperProps> = ({ open, toggleOpen,
       placement='right'
       style={{ backgroundColor: '#ffffffb0', width: 'calc(100vw - 64px)' }}
       open={open}
-      closable={false}
-      mask={false}
-      styles={{ wrapper: { width: 'calc(100vw - 64px)' } }}
+      styles={{ wrapper: { width: 'calc(100vw - 64px)' }, mask: { background: '#ffffff00' } }}
+      onClose={() => toggleOpen(false)}
       title={
         <div
           style={{

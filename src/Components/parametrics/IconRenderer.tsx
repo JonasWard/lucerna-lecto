@@ -2,8 +2,8 @@ import React, { ReactNode } from 'react';
 import { CiLineHeight } from 'react-icons/ci';
 import { FaRegSquare, FaSquareFull, FaKey, FaArchway, FaCog, FaRegCircle, FaVectorSquare } from 'react-icons/fa';
 import { FaRegSquareFull } from 'react-icons/fa6';
-import { PiCubeFocusFill, PiPackage, PiRainbowLight, PiStackPlusFill, PiWaveSine } from 'react-icons/pi';
-import { GiArabicDoor, GiBridge, GiFootprint, GiPoolTriangle } from 'react-icons/gi';
+import { PiCubeFocusFill, PiCylinderThin, PiPackage, PiRainbowLight, PiStackPlusFill, PiWaveSine } from 'react-icons/pi';
+import { GiArabicDoor, GiBridge, GiFootprint, GiPoolTriangle, GiWireframeGlobe } from 'react-icons/gi';
 import { MdOutlineLayers, MdGrid4X4, MdOutlineFitScreen } from 'react-icons/md';
 import { FiLayers } from 'react-icons/fi';
 import { DataType } from 'url-safe-bitpacking';
@@ -12,7 +12,7 @@ import { VersionNames } from 'src/modelDefinition/enums/versionNames';
 import { MethodNames } from 'src/modelDefinition/types/methodSemantics';
 import { AiOutlineBgColors } from 'react-icons/ai';
 import { HiOutlineColorSwatch } from 'react-icons/hi';
-import { BsFillGrid3X3GapFill } from 'react-icons/bs';
+import { BsFillGrid3X3GapFill, BsLamp } from 'react-icons/bs';
 import { TbCylinder, TbHexagonalPrism, TbHexagons, TbSum } from 'react-icons/tb';
 import { GrPaint } from 'react-icons/gr';
 import { VscDatabase } from 'react-icons/vsc';
@@ -29,6 +29,7 @@ import imageNone from 'src/assets/icons/none.png';
 import imageAlternateTiling from 'src/assets/icons/modAlternateTiling.png';
 import imageeComplexTiling from 'src/assets/icons/modeComplexTiling.png';
 import imageTiling from 'src/assets/icons/modTiling.png';
+import { IoCubeOutline } from 'react-icons/io5';
 
 export interface IconRendererProps {
   name: string;
@@ -180,12 +181,22 @@ export const getIconForKey = (
       return { mainIcon: 'γ' };
     case 'delta':
       return { mainIcon: 'δ' };
+    case 'Cube':
+      return { mainIcon: <IoCubeOutline size={size} /> };
+    case 'Cylinder':
+      return { mainIcon: <PiCylinderThin size={size} /> };
+    case 'Hanging':
+      return { mainIcon: <FaRegCircle size={size} /> };
     case AttributeNames.Settings:
       return { mainIcon: <FaCog size={size} /> };
     case AttributeNames.Material:
       return { mainIcon: <GrPaint size={size} /> };
     case AttributeNames.Base:
       return { mainIcon: <VscDatabase size={size} /> };
+    case AttributeNames.Wireframe:
+      return { mainIcon: <GiWireframeGlobe size={size} /> };
+    case AttributeNames.LampShades:
+      return { mainIcon: <BsLamp size={size} /> };
     default:
       return { mainIcon: name };
   }

@@ -38,4 +38,9 @@ export const version0EnumSemantics = {
     { value: 2, label: '2 Layers' },
     { value: 3, label: '3 Layers' },
   ],
+  [AttributeNames.LampShades]: [
+    { value: 0, label: 'Cube' },
+    { value: 1, label: 'Cylinder' },
+    { value: 2, label: 'Hanging' },
+  ],
 };

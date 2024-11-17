@@ -11,7 +11,9 @@ export const ThreeCanvas: React.FC<{
   return (
     <Canvas gl={{ preserveDrawingBuffer: true }} key='threejs-canvas' ref={canvasRef} style={{ width: '100svw', height: '100svh' }}>
       <OrbitControls />
-      <ambientLight intensity={Math.PI / 2} />
+      <ambientLight intensity={Math.PI / 4} />
+      <pointLight position={[0, 50, 0]} intensity={Math.PI * 1000} />
+      {/* <spotLight position={[800, 800, 800]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} /> */}
       <ThreeMesh data={renderData} />
     </Canvas>
   );

@@ -11,8 +11,12 @@ import { LiaFileDownloadSolid } from 'react-icons/lia';
 import { useDebounce } from 'use-debounce';
 import { Version0Type } from './modelDefinition/types/version0.generatedType';
 import { version0EnumSemantics } from './modelDefinition/types/version0.enumsemantics';
+import { exportSTL } from './webgl/geometry/exportstl';
+import { getVertexData } from './webgl/geometry/factory';
+import { Mesh } from './webgl/geometry/mesh/type';
+import { GiLaserBlast } from 'react-icons/gi';
 
-const defaultState = 'BOIJxBOIJxBOIJxBwhOIEeeeeRhAFCjIYCfQ-n-AAA';
+const defaultState = 'BOIJxBOIJxBOIJxBwhOIGNxRTpHUAMADfCAAHLaGDCKY';
 
 const isIOS = () => {
   return (
@@ -63,10 +67,12 @@ export const App: React.FC = () => {
   const downloadPNG = () => {
     if (!canvasRef.current) return;
     const link = document.createElement('a');
-    link.download = `glsl-ray-marching.${parserObjects.stringify(data)}.png`;
+    link.download = `lucerna-lecto.${parserObjects.stringify(data)}.png`;
     link.href = canvasRef.current.toDataURL();
     link.click();
   };
+
+  const downloadSTL = () => exportSTL(getVertexData(renderData as any as Version0Type), `lucerna-lecto.${parserObjects.stringify(data)}`);
 
   return (
     <>
@@ -75,6 +81,11 @@ export const App: React.FC = () => {
       <Button style={{ position: 'fixed', top: '15px', right: '15px' }} onClick={downloadPNG}>
         <LiaFileDownloadSolid style={{ position: 'absolute', width: 20, height: 20 }} size={16} />
       </Button>
+      {localStorage.getItem('iAmJonas') === 'true' ? (
+        <Button style={{ position: 'fixed', top: '50px', right: '15px' }} onClick={downloadSTL}>
+          <GiLaserBlast style={{ position: 'absolute', width: 20, height: 20 }} size={16} />
+        </Button>
+      ) : null}
     </>
   );
 };
