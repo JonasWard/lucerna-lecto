@@ -385,6 +385,7 @@ export type Version0Type = {
     ['Wireframe']: { value: boolean; name: 'Wireframe'; type: DataType.BOOLEAN };
     ['subDivisions']: { value: number; name: 'subDivisions'; type: DataType.INT; min: 0; max: 5; bits: 3 };
     ['smoothing']: { value: number; name: 'smoothing'; type: DataType.FLOAT; min: 0; max: 1; precision: 3; significand: 10 };
+    ['expression']: { value: number; name: 'expression'; type: DataType.FLOAT; min: 0; max: 1; precision: 3; significand: 10 };
     ['color']: ColorType;
   };
 };

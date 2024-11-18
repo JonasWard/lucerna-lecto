@@ -2,10 +2,12 @@ import { Color } from 'three';
 import { Version0Type } from '../../modelDefinition/types/version0.generatedType';
 import { VertexData } from './helpers/vertexData';
 import { AttributeNames } from '../../modelDefinition/enums/attributeNames';
-import { getBaseMesh } from './cube/cubeMesh';
+import { getCubeMesh } from './baseMeshes/cubeMesh';
 import { getVertexDataForMesh } from './mesh/vertexData';
 import { bumpMesh } from './mesh/bumping';
 import { Mesh } from './mesh/type';
+import { catmullClark, subdivide } from './mesh/modifier';
+import { getSphereMesh } from './baseMeshes/ellipseMesh';
 
 const size = 5;
 
@@ -44,27 +46,7 @@ export const getVertexData = (data: Version0Type): VertexData => {
   };
 
   if (data[AttributeNames.LampShades].s.value === 0) {
-    mesh = getBaseMesh(
-      data[AttributeNames.LampShades].v.h.value,
-      data[AttributeNames.LampShades].v.inset.value,
-      data[AttributeNames.LampShades].v['h-base'].value,
-      data[AttributeNames.LampShades].v.w.value,
-      data[AttributeNames.LampShades].v.d.value,
-      data[AttributeNames.Material].subDivisions.value,
-      data[AttributeNames.Material].smoothing.value
-    );
-  }
-  if (data[AttributeNames.LampShades].s.value === 1) {
-    mesh = getBaseMesh(
-      data[AttributeNames.LampShades].v.h.value,
-      data[AttributeNames.LampShades].v.inset.value,
-      data[AttributeNames.LampShades].v['h-base'].value,
-      data[AttributeNames.LampShades].v.r0.value,
-      data[AttributeNames.LampShades].v.r1.value
-    );
-  }
-  if (data[AttributeNames.LampShades].s.value === 2) {
-    mesh = getBaseMesh(
+    mesh = getCubeMesh(
       data[AttributeNames.LampShades].v.h.value,
       data[AttributeNames.LampShades].v.inset.value,
       data[AttributeNames.LampShades].v['h-base'].value,
@@ -72,6 +54,21 @@ export const getVertexData = (data: Version0Type): VertexData => {
       data[AttributeNames.LampShades].v.d.value
     );
   }
+  if (data[AttributeNames.LampShades].s.value === 1) {
+    mesh = getSphereMesh(data[AttributeNames.LampShades].v.h.value, data[AttributeNames.LampShades].v.r0.value, data[AttributeNames.LampShades].v.r1.value);
+  }
+  if (data[AttributeNames.LampShades].s.value === 2) {
+    mesh = getCubeMesh(
+      data[AttributeNames.LampShades].v.h.value,
+      data[AttributeNames.LampShades].v.inset.value,
+      data[AttributeNames.LampShades].v['h-base'].value,
+      data[AttributeNames.LampShades].v.w.value,
+      data[AttributeNames.LampShades].v.d.value
+    );
+  }
+
+  for (let i = 0; i < data[AttributeNames.Material].subDivisions.value; i++)
+    mesh = (data[AttributeNames.Material].smoothing.value < 0.01 ? subdivide : catmullClark)(mesh); //, smoothing);
 
   mesh = bumpMesh(mesh, data);
 

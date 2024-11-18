@@ -1,4 +1,3 @@
-import { mainMethods } from '../../../modelDefinition/types/methodSemantics';
 import { Version0Type } from '../../../modelDefinition/types/version0.generatedType';
 import { V3 } from '../helpers/v3';
 import { sdGyroid, sdNeovius, sdSchwarzD, sdSchwarzP, sdSphere, sdTorus } from './sdMethods';
@@ -65,7 +64,7 @@ const getSdMethod = (data: Version0Type): ((v: V3, dataV: V3, n: V3) => V3) => {
 
 export const bumpMesh = (mesh: Mesh, data: Version0Type) => {
   const sdMethod = getSdMethod(data);
-  const normals = mesh.normals.map((v) => V3.mul(v, 0.1));
+  const normals = mesh.normals.map((v) => V3.mul(v, data['Material'].expression.value));
 
   return {
     normals,

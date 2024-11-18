@@ -1,6 +1,6 @@
 import { V3 } from '../helpers/v3';
-import { catmullClark } from '../mesh/modifier';
 import { Mesh } from '../mesh/type';
+import { createLoftQuads } from './createLoftQuads';
 
 const MAX_BASE_GRID = 10;
 const INSET_ANGLE = 40;
@@ -48,13 +48,7 @@ const createNormalLoop = (wC: number, dC: number, noNormal: boolean = true, ns: 
   return ns;
 };
 
-const createLoftQuads = (startIndex: number, vertexCount: number, fs: number[][] = []): number[][] => {
-  for (let i = 0; i < vertexCount; i++)
-    fs.push([startIndex + i, startIndex + ((i + 1) % vertexCount), startIndex + ((i + 1) % vertexCount) + vertexCount, startIndex + i + vertexCount]);
-  return fs;
-};
-
-export const getBaseMesh = (h: number, inset: number, hBase: number, w: number, d: number, subDCount: number, smoothing: number): Mesh => {
+export const getCubeMesh = (h: number, inset: number, hBase: number, w: number, d: number): Mesh => {
   // row
   const xCount = Math.max(1, Math.ceil((w - inset * 2) / Math.max((w - inset * 2) / inset, MAX_BASE_GRID)));
   const yCount = Math.max(1, Math.ceil((d - inset * 2) / Math.max((d - inset * 2) / inset, MAX_BASE_GRID)));
@@ -121,29 +115,9 @@ export const getBaseMesh = (h: number, inset: number, hBase: number, w: number, 
     createNormalLoop(xCount + 2, yCount + 2, true, ns);
   }
 
-  let mesh = {
+  return {
     vertices: vs,
     normals: ns,
     faces: fs,
   };
-
-  // const n = { x: 0, y: 0, z: 1 };
-
-  // const r = 5;
-
-  // mesh = {
-  //   vertices: [...Array(Math.floor(3 + smoothing * 10))].map((_, i, arr) => ({
-  //     x: Math.cos((Math.PI * 2 * i) / arr.length) * r,
-  //     y: Math.sin((Math.PI * 2 * i) / arr.length) * r,
-  //     z: 0,
-  //   })),
-  //   faces: [[...Array(Math.floor(3 + smoothing * 10)).keys()]],
-  //   normals: [...Array(Math.floor(3 + smoothing * 10))].map(() => n),
-  // };
-
-  // mesh = subdivide(subdivide(subdivide(mesh)));
-
-  for (let i = 0; i < subDCount; i++) mesh = catmullClark(mesh); //, smoothing);
-
-  return mesh;
 };

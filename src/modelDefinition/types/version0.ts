@@ -36,6 +36,7 @@ const materialDefinition: SingleLevelContentType[] = [
   DataEntryFactory.createBoolean(false, AttributeNames.Wireframe),
   DataEntryFactory.createInt(0, 0, 5, 'subDivisions'),
   DataEntryFactory.createFloat(0.5, 0, 1, 3, 'smoothing'),
+  DataEntryFactory.createFloat(0.1, 0.025, 5, 3, 'expression'),
   [
     'color',
     [
@@ -56,7 +57,7 @@ const cube: NonEmptyValidEntryArrayType = [
 ];
 
 const cylinder: NonEmptyValidEntryArrayType = [
-  DataEntryFactory.createFloat(1, 0, 1, 2, 'h'),
+  DataEntryFactory.createFloat(100, 50, 220, 1, 'h'),
   DataEntryFactory.createInt(1, 1, 10, 'inset'),
   DataEntryFactory.createInt(1, 1, 32, 'h-base'),
   DataEntryFactory.createFloat(40, 30, 150, 1, 'r0'),

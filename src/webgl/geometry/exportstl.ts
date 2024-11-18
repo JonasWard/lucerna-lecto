@@ -2,7 +2,7 @@ import { V3 } from './helpers/v3';
 import { VertexData } from './helpers/vertexData';
 
 const STL_NUMBER_PRECISION = 4;
-export const exportSTL = (vertexData: VertexData, fileName = 'chocolade-chaud') => {
+export const exportSTL = (vertexData: VertexData, fileName = 'lucerna-lecto') => {
   // get an index and face list fron the object, geometry is just fine, all faces are triangles
 
   const vertexStrings: string[] = [];
@@ -32,9 +32,9 @@ endfacet`
 
   const element = document.createElement('a');
 
-  const stlContent = `solid Exported by JonasWard with chocolate-chaud
+  const stlContent = `solid Exported by JonasWard with lucerna-lecto
 ${vertexStrings.join('\n')}
-endsolid Exported by JonasWard with chocolate-chaud`;
+endsolid Exported by JonasWard with lucerna-lecto`;
 
   const file = new Blob([stlContent], {
     type: 'text/plain',
