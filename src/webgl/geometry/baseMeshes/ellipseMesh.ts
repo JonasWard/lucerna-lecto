@@ -4,6 +4,7 @@ import { createLoftQuads } from './createLoftQuads';
 
 const RADIAL_SPACING = 2.5;
 const VERTICAL_SPACING = 10;
+const EQUAL_RADII_TOLERANCE = 0.1;
 
 const createVertexAndNormalLoop = (r: number, css: [number, number][], z: number = 0, vs: V3[] = [], ns: V3[] = []): V3[] => {
   for (const [x, y] of css) {
@@ -24,19 +25,20 @@ const getCosSinArray = (divs: number): [number, number][] => {
 };
 
 const getHeightRadii = (h: number, r0: number, r1: number): [number, number][] => {
-  const r = (r1 - r0) * 0.5 + h ** 2 / ((r1 - r0) * 8);
-  const theta = 2 * Math.asin((h * 0.5) / r);
   const divs = Math.ceil(h / VERTICAL_SPACING);
-  const tDelta = theta / divs;
-
-  console.log(r, theta, divs);
-
   const hrs: [number, number][] = [];
 
-  for (let t = 0; t <= divs; t++) {
-    const a = t * tDelta - 0.5 * theta;
-    console.log(a);
-    hrs.push([h * 0.5 + r * Math.sin(a), r0 + r * (1 - Math.cos(a))]);
+  if (Math.abs(r1 - r0) < EQUAL_RADII_TOLERANCE) {
+    for (let t = 0; t <= divs; t++) hrs.push([(h * t) / divs, r0]);
+  } else {
+    const r = (r1 - r0) * 0.5 + h ** 2 / ((r1 - r0) * 8);
+    const theta = 2 * Math.asin((h * 0.5) / r);
+    const tDelta = theta / divs;
+
+    for (let t = 0; t <= divs; t++) {
+      const a = t * tDelta - 0.5 * theta;
+      hrs.push([h * 0.5 + r * Math.sin(a), r0 + r * (1 - Math.cos(a))]);
+    }
   }
 
   return hrs;
