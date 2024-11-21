@@ -1,7 +1,7 @@
 import { V3 } from './helpers/v3';
 import { VertexData } from './helpers/vertexData';
 
-const STL_NUMBER_PRECISION = 4;
+const STL_NUMBER_PRECISION = 5;
 export const exportSTL = (vertexData: VertexData, fileName = 'lucerna-lecto') => {
   // get an index and face list fron the object, geometry is just fine, all faces are triangles
 

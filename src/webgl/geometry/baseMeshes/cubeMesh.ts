@@ -20,7 +20,7 @@ const createVertexLoop = (w: number, wC: number, d: number, dC: number, z: numbe
   return vs;
 };
 
-const sqrt2div2 = 1; // / Math.sqrt(2);
+const sqrt2div2 = 1 / Math.sqrt(2);
 
 const corners: V3[] = [
   { x: -sqrt2div2, y: -sqrt2div2, z: 0 },
@@ -48,71 +48,89 @@ const createNormalLoop = (wC: number, dC: number, noNormal: boolean = true, ns: 
   return ns;
 };
 
-export const getCubeMesh = (h: number, inset: number, hBase: number, w: number, d: number): Mesh => {
-  // row
-  const xCount = Math.max(1, Math.ceil((w - inset * 2) / Math.max((w - inset * 2) / inset, MAX_BASE_GRID)));
-  const yCount = Math.max(1, Math.ceil((d - inset * 2) / Math.max((d - inset * 2) / inset, MAX_BASE_GRID)));
-
-  const baseLoopCount = (xCount + yCount) * 2;
-  const shapeLoopCount = (xCount + yCount + 4) * 2;
-
+export const getCubeMesh = (h: number, w: number, d: number, inset?: number, hBase?: number): Mesh => {
   const vs: V3[] = [];
   const ns: V3[] = [];
   const fs: number[][] = [];
-  // first row
-  createLoftQuads(0, baseLoopCount, fs);
 
-  createVertexLoop(w - inset * 2, xCount, d - inset * 2, yCount, 0, vs);
-  createNormalLoop(xCount, yCount, true, ns);
+  if (hBase !== undefined && inset !== undefined) {
+    // row
+    const xCount = Math.max(1, Math.ceil((w - inset * 2) / Math.max((w - inset * 2) / inset, MAX_BASE_GRID)));
+    const yCount = Math.max(1, Math.ceil((d - inset * 2) / Math.max((d - inset * 2) / inset, MAX_BASE_GRID)));
 
-  createVertexLoop(w - inset * 2, xCount, d - inset * 2, yCount, hBase, vs);
-  createNormalLoop(xCount, yCount, true, ns);
+    const baseLoopCount = (xCount + yCount) * 2;
+    const shapeLoopCount = (xCount + yCount + 4) * 2;
 
-  // lofting top and bottom
-  let iInner = baseLoopCount;
-  let iOuter = 2 * baseLoopCount - 1;
-  fs.push([iInner, 2 * baseLoopCount + 1, 2 * baseLoopCount, 2 * baseLoopCount + shapeLoopCount - 1]);
-  iOuter += 2;
-  for (let j = 0; j < xCount; j++) {
-    fs.push([iInner, iInner + 1, iOuter + 1, iOuter]);
-    iInner++;
-    iOuter++;
-  }
-  fs.push([iInner, iOuter + 2, iOuter + 1, iOuter]);
-  iOuter += 2;
-  for (let j = 0; j < yCount; j++) {
-    fs.push([iInner, iInner + 1, iOuter + 1, iOuter]);
-    iInner++;
-    iOuter++;
-  }
-  fs.push([iInner, iOuter + 2, iOuter + 1, iOuter]);
-  iOuter += 2;
-  for (let j = 0; j < xCount; j++) {
-    fs.push([iInner, iInner + 1, iOuter + 1, iOuter]);
-    iInner++;
-    iOuter++;
-  }
-  fs.push([iInner, iOuter + 2, iOuter + 1, iOuter]);
-  iOuter += 2;
-  for (let j = 0; j < yCount - 1; j++) {
-    fs.push([iInner, iInner + 1, iOuter + 1, iOuter]);
-    iInner++;
-    iOuter++;
-  }
-  // fs.push([iInner + 1, baseLoopCount, 2 * baseLoopCount + shapeLoopCount - 1, 2 * baseLoopCount]);
-  fs.push([2 * baseLoopCount - 1, baseLoopCount, iOuter + 1, iOuter]);
+    // first row
+    createLoftQuads(0, baseLoopCount, fs);
 
-  const insetHeight = Math.tan((INSET_ANGLE * Math.PI) / 180) * inset;
+    createVertexLoop(w - inset * 2, xCount, d - inset * 2, yCount, 0, vs);
+    createNormalLoop(xCount, yCount, true, ns);
 
-  const zCount = Math.max(1, h / Math.max((h - insetHeight) / inset, MAX_BASE_GRID));
-  const zD = (h - insetHeight) / zCount;
+    createVertexLoop(w - inset * 2, xCount, d - inset * 2, yCount, hBase, vs);
+    createNormalLoop(xCount, yCount, true, ns);
 
-  for (let i = 0; i <= zCount; i++) {
-    if (i < zCount - 1) createLoftQuads(vs.length, shapeLoopCount, fs);
+    // lofting top and bottom
+    let iInner = baseLoopCount;
+    let iOuter = 2 * baseLoopCount - 1;
+    fs.push([iInner, 2 * baseLoopCount + 1, 2 * baseLoopCount, 2 * baseLoopCount + shapeLoopCount - 1]);
+    iOuter += 2;
+    for (let j = 0; j < xCount; j++) {
+      fs.push([iInner, iInner + 1, iOuter + 1, iOuter]);
+      iInner++;
+      iOuter++;
+    }
+    fs.push([iInner, iOuter + 2, iOuter + 1, iOuter]);
+    iOuter += 2;
+    for (let j = 0; j < yCount; j++) {
+      fs.push([iInner, iInner + 1, iOuter + 1, iOuter]);
+      iInner++;
+      iOuter++;
+    }
+    fs.push([iInner, iOuter + 2, iOuter + 1, iOuter]);
+    iOuter += 2;
+    for (let j = 0; j < xCount; j++) {
+      fs.push([iInner, iInner + 1, iOuter + 1, iOuter]);
+      iInner++;
+      iOuter++;
+    }
+    fs.push([iInner, iOuter + 2, iOuter + 1, iOuter]);
+    iOuter += 2;
+    for (let j = 0; j < yCount - 1; j++) {
+      fs.push([iInner, iInner + 1, iOuter + 1, iOuter]);
+      iInner++;
+      iOuter++;
+    }
+    // fs.push([iInner + 1, baseLoopCount, 2 * baseLoopCount + shapeLoopCount - 1, 2 * baseLoopCount]);
+    fs.push([2 * baseLoopCount - 1, baseLoopCount, iOuter + 1, iOuter]);
 
-    const z = zD * i + hBase + insetHeight;
-    createVertexLoop(w, xCount + 2, d, yCount + 2, z, vs).length;
-    createNormalLoop(xCount + 2, yCount + 2, true, ns);
+    const insetHeight = Math.tan((INSET_ANGLE * Math.PI) / 180) * inset;
+
+    const zCount = Math.max(1, h / Math.max((h - insetHeight) / inset, MAX_BASE_GRID));
+    const zD = (h - insetHeight) / zCount;
+
+    for (let i = 0; i <= zCount; i++) {
+      if (i < zCount - 1) createLoftQuads(vs.length, shapeLoopCount, fs);
+
+      const z = zD * i + hBase + insetHeight;
+      createVertexLoop(w, xCount + 2, d, yCount + 2, z, vs).length;
+      createNormalLoop(xCount + 2, yCount + 2, true, ns);
+    }
+  } else {
+    const xCount = Math.max(1, w / MAX_BASE_GRID);
+    const yCount = Math.max(1, d / MAX_BASE_GRID);
+    const zCount = Math.max(1, h / MAX_BASE_GRID);
+    const zD = h / zCount;
+
+    const shapeLoopCount = (xCount + yCount) * 2;
+
+    for (let i = 0; i <= zCount; i++) {
+      if (i < zCount - 1) createLoftQuads(vs.length, shapeLoopCount, fs);
+
+      const z = zD * i;
+      createVertexLoop(w, xCount, d, yCount, z, vs).length;
+      createNormalLoop(xCount, yCount, true, ns);
+    }
   }
 
   return {

@@ -13,7 +13,15 @@ export enum MethodNames {
   None = 'None',
 }
 
-export const mainMethods = [MethodNames.Gyroid, MethodNames.SchwarzD, MethodNames.SchwarzP, MethodNames.Perlin, MethodNames.Neovius, MethodNames.Mandelbrot];
+export const mainMethods = [
+  MethodNames.Gyroid,
+  MethodNames.SchwarzD,
+  MethodNames.SchwarzP,
+  MethodNames.Perlin,
+  MethodNames.Neovius,
+  MethodNames.Mandelbrot,
+  MethodNames.Sin,
+];
 export const preProcessingMethods = [MethodNames.Complex, MethodNames.Modulus, MethodNames.AlternatingMoldus];
 export const postProcessingMethods = [MethodNames.Sin, MethodNames.Cos];
 

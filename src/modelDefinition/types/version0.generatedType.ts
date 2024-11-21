@@ -314,8 +314,18 @@ export type Version0Type = {
         s: { value: 0; name: 'Lamp Shades'; type: DataType.ENUM; max: 2; bits: 2 };
         v: {
           ['h']: { value: number; name: 'h'; type: DataType.FLOAT; min: 40; max: 200; precision: 1; significand: 11 };
-          ['inset']: { value: number; name: 'inset'; type: DataType.INT; min: 5; max: 50; bits: 6 };
-          ['h-base']: { value: number; name: 'h-base'; type: DataType.INT; min: 5; max: 50; bits: 6 };
+          ['Has Base']:
+            | {
+                s: { value: true; name: 'Has Base'; type: DataType.BOOLEAN };
+                v: {
+                  ['inset']: { value: number; name: 'inset'; type: DataType.INT; min: 5; max: 50; bits: 6 };
+                  ['h-base']: { value: number; name: 'h-base'; type: DataType.INT; min: 5; max: 50; bits: 6 };
+                };
+              }
+            | {
+                s: { value: false; name: 'Has Base'; type: DataType.BOOLEAN };
+                v: {};
+              };
           ['w']: { value: number; name: 'w'; type: DataType.FLOAT; min: 30; max: 150; precision: 1; significand: 11 };
           ['d']: { value: number; name: 'd'; type: DataType.FLOAT; min: 30; max: 150; precision: 1; significand: 11 };
           ['edgeSmoothing']: { value: number; name: 'edgeSmoothing'; type: DataType.FLOAT; min: 0; max: 1; precision: 2; significand: 7 };
@@ -348,15 +358,6 @@ export type Version0Type = {
           {
             ['MainMethodEnum']: { value: number; name: 'MainMethodEnum'; type: DataType.ENUM; max: 5; bits: 3 };
             ['MethodScale']: { value: number; name: 'MethodScale'; type: DataType.FLOAT; min: 0.001; max: 1000; precision: 3; significand: 20 };
-          }
-        ];
-      }
-    | {
-        s: { value: 2; name: 'Main Methods'; type: DataType.INT; min: 1; max: 3; bits: 2 };
-        v: [
-          {
-            ['MainMethodEnum']: { value: number; name: 'MainMethodEnum'; type: DataType.ENUM; max: 5; bits: 3 };
-            ['MethodScale']: { value: number; name: 'MethodScale'; type: DataType.FLOAT; min: 0.001; max: 1000; precision: 3; significand: 20 };
           },
           {
             ['MainMethodEnum']: { value: number; name: 'MainMethodEnum'; type: DataType.ENUM; max: 5; bits: 3 };
@@ -365,7 +366,7 @@ export type Version0Type = {
         ];
       }
     | {
-        s: { value: 3; name: 'Main Methods'; type: DataType.INT; min: 1; max: 3; bits: 2 };
+        s: { value: 2; name: 'Main Methods'; type: DataType.INT; min: 1; max: 3; bits: 2 };
         v: [
           {
             ['MainMethodEnum']: { value: number; name: 'MainMethodEnum'; type: DataType.ENUM; max: 5; bits: 3 };
@@ -385,7 +386,7 @@ export type Version0Type = {
     ['Wireframe']: { value: boolean; name: 'Wireframe'; type: DataType.BOOLEAN };
     ['subDivisions']: { value: number; name: 'subDivisions'; type: DataType.INT; min: 0; max: 5; bits: 3 };
     ['smoothing']: { value: number; name: 'smoothing'; type: DataType.FLOAT; min: 0; max: 1; precision: 3; significand: 10 };
-    ['expression']: { value: number; name: 'expression'; type: DataType.FLOAT; min: 0; max: 1; precision: 3; significand: 10 };
     ['color']: ColorType;
+    ['Double Sided']: { value: boolean; name: 'Double Sided'; type: DataType.BOOLEAN };
   };
 };

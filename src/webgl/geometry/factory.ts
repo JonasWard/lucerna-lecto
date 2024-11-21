@@ -45,13 +45,15 @@ export const getVertexData = (data: Version0Type): VertexData => {
     normals: [],
   };
 
+  console.log(data[AttributeNames.LampShades].v);
+
   if (data[AttributeNames.LampShades].s.value === 0) {
     mesh = getCubeMesh(
       data[AttributeNames.LampShades].v.h.value,
-      data[AttributeNames.LampShades].v.inset.value,
-      data[AttributeNames.LampShades].v['h-base'].value,
       data[AttributeNames.LampShades].v.w.value,
-      data[AttributeNames.LampShades].v.d.value
+      data[AttributeNames.LampShades].v.d.value,
+      (data[AttributeNames.LampShades] as any).v['Has Base'].s.value ? (data[AttributeNames.LampShades] as any).v['Has Base'].v.inset.value : undefined,
+      (data[AttributeNames.LampShades] as any).v['Has Base'].s.value ? (data[AttributeNames.LampShades] as any).v['Has Base'].v['h-base'].value : undefined
     );
   }
   if (data[AttributeNames.LampShades].s.value === 1) {
@@ -80,4 +82,5 @@ export const getMaterialColor = (data: Version0Type): Color => {
   return new Color(c.R.value / 255, c.G.value / 255, c.B.value / 255);
 };
 
+export const isDoubleSide = (data: Version0Type): boolean => data[AttributeNames.Material][AttributeNames.DoubleSided].value;
 export const isWireframe = (data: Version0Type): boolean => data[AttributeNames.Material][AttributeNames.Wireframe].value;

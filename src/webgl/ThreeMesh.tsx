@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Version0Type } from '../modelDefinition/types/version0.generatedType';
-import { getMaterialColor, getVertexData, isWireframe } from './geometry/factory';
+import { getMaterialColor, getVertexData, isDoubleSide, isWireframe } from './geometry/factory';
 import { BufferAttribute, BufferGeometry, Mesh, MeshBasicMaterial, MeshPhongMaterial, MeshStandardMaterial } from 'three';
 
 export const ThreeMesh: React.FC<{ data: Version0Type }> = ({ data }) => {
@@ -10,7 +10,7 @@ export const ThreeMesh: React.FC<{ data: Version0Type }> = ({ data }) => {
   useEffect(() => {
     if (meshRef.current) {
       const vertexData = getVertexData(data);
-      meshRef.current.material = new MeshPhongMaterial({ color, side: 0, wireframe: isWireframe(data) });
+      meshRef.current.material = new MeshPhongMaterial({ color, side: isDoubleSide(data) ? 2 : 0, wireframe: isWireframe(data) });
       const bufferGeometry = new BufferGeometry();
       bufferGeometry.setIndex(vertexData.indices);
       bufferGeometry.attributes['position'] = new BufferAttribute(vertexData.positions, 3);

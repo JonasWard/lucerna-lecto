@@ -1,6 +1,12 @@
 import { DataEntryFactory } from 'url-safe-bitpacking';
 import { AttributeNames } from '../enums/attributeNames';
-import { ArrayEntryDataType, EnumEntryDataType, NonEmptyValidEntryArrayType, SingleLevelContentType } from 'url-safe-bitpacking/dist/types';
+import {
+  ArrayEntryDataType,
+  EnumEntryDataType,
+  NonEmptyValidEntryArrayType,
+  OptionalEntryDataType,
+  SingleLevelContentType,
+} from 'url-safe-bitpacking/dist/types';
 import { MainMethodLabels } from './methodSemantics';
 
 const mainMethodVersionStack: ArrayEntryDataType = [
@@ -34,7 +40,7 @@ const viewportParameters: SingleLevelContentType[] = [
 
 const materialDefinition: SingleLevelContentType[] = [
   DataEntryFactory.createBoolean(false, AttributeNames.Wireframe),
-  DataEntryFactory.createInt(0, 0, 5, 'subDivisions'),
+  DataEntryFactory.createInt(0, 0, 6, 'subDivisions'),
   DataEntryFactory.createFloat(0.5, 0, 1, 3, 'smoothing'),
   DataEntryFactory.createFloat(0.1, 0.025, 5, 3, 'expression'),
   [
@@ -45,19 +51,21 @@ const materialDefinition: SingleLevelContentType[] = [
       DataEntryFactory.createInt(0, 0, 255, AttributeNames.B),
     ],
   ],
+  DataEntryFactory.createBoolean(false, AttributeNames.DoubleSided),
 ];
 
+const withBaseSwitch: OptionalEntryDataType = [false, [], [DataEntryFactory.createInt(15, 5, 50, 'inset'), DataEntryFactory.createInt(10, 5, 50, 'h-base')]];
+
 const cube: NonEmptyValidEntryArrayType = [
-  DataEntryFactory.createFloat(50, 40, 200, 1, 'h'),
-  DataEntryFactory.createInt(15, 5, 50, 'inset'),
-  DataEntryFactory.createInt(10, 5, 50, 'h-base'),
+  DataEntryFactory.createFloat(50, 40, 240, 1, 'h'),
+  [AttributeNames.HasBase, withBaseSwitch],
   DataEntryFactory.createFloat(40, 30, 150, 1, 'w'),
   DataEntryFactory.createFloat(40, 30, 150, 1, 'd'),
   DataEntryFactory.createFloat(0, 0, 1, 2, 'edgeSmoothing'),
 ];
 
 const cylinder: NonEmptyValidEntryArrayType = [
-  DataEntryFactory.createFloat(100, 50, 220, 1, 'h'),
+  DataEntryFactory.createFloat(100, 50, 240, 1, 'h'),
   DataEntryFactory.createInt(1, 1, 10, 'inset'),
   DataEntryFactory.createInt(1, 1, 32, 'h-base'),
   DataEntryFactory.createFloat(40, 30, 150, 1, 'r0'),

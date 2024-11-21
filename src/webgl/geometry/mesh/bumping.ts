@@ -1,6 +1,6 @@
 import { Version0Type } from '../../../modelDefinition/types/version0.generatedType';
 import { V3 } from '../helpers/v3';
-import { sdGyroid, sdNeovius, sdSchwarzD, sdSchwarzP, sdSphere, sdTorus } from './sdMethods';
+import { sdSine, sdGyroid, sdNeovius, sdSchwarzD, sdSchwarzP, sdSphere, sdTorus, sdPerlin } from './sdMethods';
 import { Mesh } from './type';
 
 const Z_SCALE = 0.25;
@@ -14,11 +14,13 @@ const getSpecificMethod = (type: number) => {
     case 2: // MethodNames.SchwarzP:
       return sdSchwarzP;
     case 3: // MethodNames.Perlin:
-      return sdSphere;
+      return sdPerlin;
     case 4: // MethodNames.Neovius:
       return sdNeovius;
     case 5: // MethodNames.Mandelbrot:
       return sdTorus;
+    case 6: // MethodNames.Cos:
+      return sdSine;
     default:
       return sdSphere;
   }

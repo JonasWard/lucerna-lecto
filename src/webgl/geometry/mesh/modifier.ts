@@ -20,7 +20,7 @@ export const catmullClark = (mesh: Mesh): Mesh => {
     // adding face center and normal
     const fCenterIdx = vertices.push(V3.mul(V3.add(...f.map((i) => vertices[i])), 1 / f.length)) - 1;
     faceFaceCenterMap[fIdx] = fCenterIdx;
-    normals.push(V3.mul(V3.add(...f.map((i) => normals[i])), 1 / f.length));
+    normals.push(V3.getUnit(V3.mul(V3.add(...f.map((i) => normals[i])), 1 / f.length)));
 
     faceMidEdgeArray.push(
       f.map((vIdx, i, arr) => {
@@ -50,7 +50,7 @@ export const catmullClark = (mesh: Mesh): Mesh => {
   // adding of the new weighted edge averages
   const edgeVId = Object.fromEntries(
     Object.entries(edgeIdxVCollectiondMap).map(([eID, vIdxs]) => {
-      normals.push(V3.mul(V3.add(...vIdxs.map((i) => normals[i])), 1 / vIdxs.length));
+      normals.push(V3.getUnit(V3.mul(V3.add(...vIdxs.map((i) => normals[i])), 1 / vIdxs.length)));
       return [eID, vertices.push(V3.mul(V3.add(...vIdxs.map((i) => vertices[i])), 1 / vIdxs.length)) - 1];
     })
   );

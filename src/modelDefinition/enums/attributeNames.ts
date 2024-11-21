@@ -89,4 +89,6 @@ export enum AttributeNames {
   Settings = 'Settings',
   Wireframe = 'Wireframe',
   LampShades = 'Lamp Shades',
+  HasBase = 'Has Base',
+  DoubleSided = 'Double Sided',
 }
