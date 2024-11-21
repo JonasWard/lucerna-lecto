@@ -45,8 +45,6 @@ export const getVertexData = (data: Version0Type): VertexData => {
     normals: [],
   };
 
-  console.log(data[AttributeNames.LampShades].v);
-
   if (data[AttributeNames.LampShades].s.value === 0) {
     mesh = getCubeMesh(
       data[AttributeNames.LampShades].v.h.value,
