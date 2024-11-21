@@ -13,7 +13,7 @@ import { MethodNames } from 'src/modelDefinition/types/methodSemantics';
 import { AiOutlineBgColors } from 'react-icons/ai';
 import { HiOutlineColorSwatch } from 'react-icons/hi';
 import { BsFillGrid3X3GapFill, BsLamp } from 'react-icons/bs';
-import { TbCylinder, TbHexagonalPrism, TbHexagons, TbSum } from 'react-icons/tb';
+import { TbArrowCurveLeft, TbCylinder, TbHexagonalPrism, TbHexagons, TbSum } from 'react-icons/tb';
 import { GrPaint } from 'react-icons/gr';
 import { VscDatabase } from 'react-icons/vsc';
 
@@ -197,6 +197,8 @@ export const getIconForKey = (
       return { mainIcon: <GiWireframeGlobe size={size} /> };
     case AttributeNames.LampShades:
       return { mainIcon: <BsLamp size={size} /> };
+    case AttributeNames.VerticalProfile:
+      return { mainIcon: <TbArrowCurveLeft size={size} /> };
     default:
       return { mainIcon: name };
   }

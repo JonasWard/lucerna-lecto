@@ -14,6 +14,7 @@ const displayTypeMap = {
   [AttributeNames.Heights]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
   [AttributeNames.Base]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
   [AttributeNames.Material]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
+  [AttributeNames.VerticalProfile]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
 };
 
 type IParametricInputProps = {
