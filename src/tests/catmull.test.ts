@@ -15,7 +15,5 @@ test('HalfEdgeModifier.getSubdividedHEMesh', () => {
     normals: [n, n, n],
   };
 
-  console.log(catmullClark(mesh));
-
   expect(test).toBeTruthy();
 });
