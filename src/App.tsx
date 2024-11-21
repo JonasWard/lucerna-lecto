@@ -12,9 +12,10 @@ import { useDebounce } from 'use-debounce';
 import { Version0Type } from './modelDefinition/types/version0.generatedType';
 import { version0EnumSemantics } from './modelDefinition/types/version0.enumsemantics';
 import { exportSTL } from './webgl/geometry/exportstl';
+import { exportOBJ } from './webgl/geometry/exportObj';
 import { getVertexData } from './webgl/geometry/factory';
-import { Mesh } from './webgl/geometry/mesh/type';
 import { GiLaserBlast } from 'react-icons/gi';
+import { SiCncf } from 'react-icons/si';
 
 const defaultState = 'BOIJxBOIJxBOIJxBwhOIGNxRTpHUAMADfCAAHLaGDCKY';
 
@@ -73,6 +74,7 @@ export const App: React.FC = () => {
   };
 
   const downloadSTL = () => exportSTL(getVertexData(renderData as any as Version0Type), `lucerna-lecto.${parserObjects.stringify(data)}`);
+  const downloadOBJ = () => exportOBJ(getVertexData(renderData as any as Version0Type), `lucerna-lecto.${parserObjects.stringify(data)}`);
 
   return (
     <>
@@ -82,9 +84,14 @@ export const App: React.FC = () => {
         <LiaFileDownloadSolid style={{ position: 'absolute', width: 20, height: 20 }} size={16} />
       </Button>
       {localStorage.getItem('iAmJonas') === 'true' ? (
-        <Button style={{ position: 'fixed', top: '50px', right: '15px' }} onClick={downloadSTL}>
-          <GiLaserBlast style={{ position: 'absolute', width: 20, height: 20 }} size={16} />
-        </Button>
+        <>
+          <Button style={{ position: 'fixed', top: '50px', right: '15px' }} onClick={downloadSTL}>
+            <GiLaserBlast style={{ position: 'absolute', width: 20, height: 20 }} size={16} />
+          </Button>
+          <Button style={{ position: 'fixed', top: '85px', right: '15px' }} onClick={downloadOBJ}>
+            <SiCncf style={{ position: 'absolute', width: 20, height: 20 }} size={16} />
+          </Button>
+        </>
       ) : null}
     </>
   );
