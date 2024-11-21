@@ -19,7 +19,7 @@ const getSpecificMethod = (type: number) => {
       return sdNeovius;
     case 5: // MethodNames.Mandelbrot:
       return sdTorus;
-    case 6: // MethodNames.Cos:
+    case 6: // MethodNames.Sin:
       return sdSine;
     default:
       return sdSphere;
