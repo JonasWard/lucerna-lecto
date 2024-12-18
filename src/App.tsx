@@ -14,6 +14,7 @@ import { exportOBJ } from './webgl/geometry/exportobj'
 import { getMesh } from './webgl/geometry/factory'
 import { GiLaserBlast } from 'react-icons/gi'
 import { SiCncf } from 'react-icons/si'
+import { getBumpMesh } from './webgl/geometry/mesh/bumping'
 
 const defaultState = 'BZq-Wb8ZZObBTWJrhCcab6GPiJkyBWaM0Rh4oAAZQADKAAA-eu3Ro'
 
@@ -58,9 +59,15 @@ export const App: React.FC = () => {
   }
 
   const downloadSTL = () =>
-    exportSTL(getMesh(data as any as Version0Type), `lucerna-lecto.${parserObjects.stringify(data)}`)
+    exportSTL(
+      getBumpMesh(getMesh(data as any as Version0Type), data as any as Version0Type),
+      `lucerna-lecto.${parserObjects.stringify(data)}`
+    )
   const downloadOBJ = () =>
-    exportOBJ(getMesh(data as any as Version0Type), `lucerna-lecto.${parserObjects.stringify(data)}`)
+    exportOBJ(
+      getBumpMesh(getMesh(data as any as Version0Type), data as any as Version0Type),
+      `lucerna-lecto.${parserObjects.stringify(data)}`
+    )
 
   return (
     <>

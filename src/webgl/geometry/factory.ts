@@ -37,7 +37,7 @@ export const boilerPlateData: VertexData = {
   uvs,
 }
 
-export const getMesh = (data: Version0Type, noBump: boolean = false): Mesh => {
+export const getMesh = (data: Version0Type): Mesh => {
   let mesh: Mesh = {
     vertices: [],
     faces: [],
@@ -92,7 +92,7 @@ export const getMesh = (data: Version0Type, noBump: boolean = false): Mesh => {
   // for (let i = 0; i < data[AttributeNames.GlobalGeometry].subDivisions.value; i++)
   //   mesh = (data[AttributeNames.GlobalGeometry].smoothing.value < 0.01 ? subdivide : catmullClark)(mesh) //, smoothing);
 
-  return noBump ? mesh : bumpMesh(mesh, data)
+  return mesh
 }
 
 export const getMaterialColor = (c: ColorType): Color => new Color(c.R.value / 255, c.G.value / 255, c.B.value / 255)

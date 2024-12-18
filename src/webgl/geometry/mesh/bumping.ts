@@ -98,7 +98,7 @@ const getSdMethod = (data: Version0Type): ((v: V3, dataV: V3, n: V3, maxD?: numb
   }
 }
 
-export const bumpMesh = (mesh: Mesh, data: Version0Type) => {
+export const getBumpMesh = (mesh: Mesh, data: Version0Type): Mesh => {
   const sdMethod = getSdMethod(data)
 
   return {

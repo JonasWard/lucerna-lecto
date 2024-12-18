@@ -15,6 +15,7 @@ import { AttributeNames } from 'src/modelDefinition/enums/attributeNames'
 import { getVertexDataForMesh } from './geometry/mesh/vertexData'
 import { getVertexInstancedMeshForMesh } from './geometry/baseMeshes/helperRenders'
 import { useData } from '../state/state'
+import { getBumpMesh } from './geometry/mesh/bumping'
 
 const getGeometrySettings = (data: Version0Type) =>
   JSON.stringify([
@@ -41,14 +42,15 @@ export const ThreeMesh = () => {
       // first checking the geometry settings
       const currentGeometrySettings = getGeometrySettings(data)
       if (currentGeometrySettings !== geometrySettings) {
-        const mesh = getMesh(data)
+        const rawMesh = getMesh(data)
+        const bumpedMesh = getBumpMesh(rawMesh, data)
 
         if (data[AttributeNames.Visualization].Vertices.value) {
           meshRef.current.geometry.dispose()
-          vertexInstancedMesh.current = getVertexInstancedMeshForMesh(mesh)
+          vertexInstancedMesh.current = getVertexInstancedMeshForMesh(bumpedMesh)
         } else {
           if (vertexInstancedMesh.current) vertexInstancedMesh.current.dispose()
-          const vertexData = getVertexDataForMesh(mesh)
+          const vertexData = getVertexDataForMesh(bumpedMesh)
           meshRef.current.material = data[AttributeNames.Material][AttributeNames.NormalMaterial].s.value
             ? new MeshNormalMaterial({
                 side: isDoubleSide(data) ? 2 : 0,
@@ -76,7 +78,6 @@ export const ThreeMesh = () => {
 
           if (data.Visualization.Normals.value) {
             if (!meshRef.current.parent) return
-            const rawMesh = getMesh(data, true)
             const rawVertexData = getVertexDataForMesh(rawMesh)
             const rawBufferGeometry = new BufferGeometry()
             rawBufferGeometry.attributes['position'] = new BufferAttribute(rawVertexData.positions, 3)
