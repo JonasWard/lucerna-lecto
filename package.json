@@ -15,7 +15,6 @@
     "react-router-dom": "6.23.1",
     "three": "^0.170.0",
     "url-safe-bitpacking": "^0.1.14",
-    "use-debounce": "^10.0.4",
     "zustand": "^5.0.1"
   },
   "devDependencies": {

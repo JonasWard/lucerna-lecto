@@ -1,8 +1,8 @@
 export enum AttributeNames {
   Version = 'version',
   Viewport = 'Viewport',
-  CameraTarget = 'Camera Target',
-  CameraOrigin = 'Camera Origin',
+  OrbitControlTarget = 'Orbit Control Target',
+  CameraPosition = 'Camera Position',
   CameraAngle = 'Camera Angle',
   Canvas = 'Canvas',
   CanvasFullScreen = 'Canvas Full Screen',
@@ -39,6 +39,7 @@ export enum AttributeNames {
   X = 'X',
   Y = 'Y',
   Z = 'Z',
+  W = 'W',
   Pitch = 'Pitch',
   Roll = 'Roll',
   Yaw = 'Yaw',
@@ -92,4 +93,9 @@ export enum AttributeNames {
   LampShades = 'Lamp Shades',
   HasBase = 'Has Base',
   DoubleSided = 'Double Sided',
+  Normals = 'Normals',
+  NormalMaterial = 'Normal Material',
+  GlobalGeometry = 'Global Geometry',
+  Visualization = 'Visualization',
+  Vertices = 'Vertices',
 }

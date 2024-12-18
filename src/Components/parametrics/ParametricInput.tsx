@@ -1,13 +1,21 @@
-import React from 'react';
-import { DisplayType, StateDataRenderer } from './StateDataRenderer';
-import { DataEntry } from 'url-safe-bitpacking';
-import { AttributeNames } from '../../modelDefinition/enums/attributeNames';
-import { shouldUseDrawer } from '../utils/windowMethods';
-import { EnumSemantics, StateDataType } from 'url-safe-bitpacking/dist/types';
+import React, { useEffect } from 'react'
+import { DisplayType, StateDataRenderer } from './StateDataRenderer'
+import { AttributeNames } from '../../modelDefinition/enums/attributeNames'
+import { shouldUseDrawer } from '../utils/windowMethods'
+import { EnumSemantics } from 'url-safe-bitpacking/dist/types'
+import { useData } from '../../state/state'
 
 const displayTypeMap = {
-  [AttributeNames.Version]: import.meta.env.DEV ? (shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER) : DisplayType.HIDDEN,
-  [AttributeNames.Viewport]: import.meta.env.DEV ? (shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER) : DisplayType.HIDDEN,
+  [AttributeNames.Version]: import.meta.env.DEV
+    ? shouldUseDrawer()
+      ? DisplayType.DRAWER
+      : DisplayType.POPOVER
+    : DisplayType.HIDDEN,
+  [AttributeNames.Viewport]: import.meta.env.DEV
+    ? shouldUseDrawer()
+      ? DisplayType.DRAWER
+      : DisplayType.POPOVER
+    : DisplayType.HIDDEN,
   [AttributeNames.LampShades]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
   [AttributeNames.MainMethods]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
   [AttributeNames.Footprint]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
@@ -15,16 +23,18 @@ const displayTypeMap = {
   [AttributeNames.Base]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
   [AttributeNames.Material]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
   [AttributeNames.VerticalProfile]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
-};
+  [AttributeNames.Visualization]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
+  [AttributeNames.GlobalGeometry]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
+}
 
 type IParametricInputProps = {
-  data: StateDataType;
-  updateEntry: (dataEntry: DataEntry | DataEntry[]) => void;
-  versionEnumSemantics?: EnumSemantics;
-};
+  versionEnumSemantics?: EnumSemantics
+}
 
-export const ParametricInput: React.FC<IParametricInputProps> = ({ data, updateEntry, versionEnumSemantics }) => {
-  const [activeName, setActiveName] = React.useState('');
+export const ParametricInput: React.FC<IParametricInputProps> = ({ versionEnumSemantics }) => {
+  const data = useData((s) => s.data)
+  const updateEntry = useData((s) => s.updateDataEntry)
+  const [activeName, setActiveName] = React.useState('')
 
   return (
     <div style={{ position: 'fixed', left: 10, top: 10, padding: 8 }}>
@@ -39,5 +49,5 @@ export const ParametricInput: React.FC<IParametricInputProps> = ({ data, updateE
         displayTypeMap={displayTypeMap}
       />
     </div>
-  );
-};
+  )
+}

@@ -42,5 +42,6 @@ export const version0EnumSemantics = {
     { value: 0, label: 'Cube' },
     { value: 1, label: 'Cylinder' },
     { value: 2, label: 'Hanging' },
+    { value: 3, label: 'Church' },
   ],
 };

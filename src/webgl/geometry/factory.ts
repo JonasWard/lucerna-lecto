@@ -1,15 +1,14 @@
-import { Color } from 'three';
-import { Version0Type } from '../../modelDefinition/types/version0.generatedType';
-import { VertexData } from './helpers/vertexData';
-import { AttributeNames } from '../../modelDefinition/enums/attributeNames';
-import { getCubeMesh } from './baseMeshes/cubeMesh';
-import { getVertexDataForMesh } from './mesh/vertexData';
-import { bumpMesh } from './mesh/bumping';
-import { Mesh } from './mesh/type';
-import { catmullClark, subdivide } from './mesh/modifier';
-import { getSphereMesh } from './baseMeshes/ellipseMesh';
+import { Color } from 'three'
+import { ColorType, Version0Type } from '../../modelDefinition/types/version0.generatedType'
+import { VertexData } from './helpers/vertexData'
+import { AttributeNames } from '../../modelDefinition/enums/attributeNames'
+import { getCubeMesh } from './baseMeshes/cubeMesh'
+import { bumpMesh } from './mesh/bumping'
+import { Mesh } from './mesh/type'
+import { getSphereMesh } from './baseMeshes/ellipseMesh'
+import { frauenKirche } from './baseMeshes/frauenKirche'
 
-const size = 5;
+const size = 5
 
 // prettier-ignore
 const positions = new Float32Array([
@@ -36,26 +35,38 @@ export const boilerPlateData: VertexData = {
   indices: [0, 1, 2, 3, 2, 1],
   normals: new Float32Array(),
   uvs,
-};
+}
 
-export const getVertexData = (data: Version0Type): VertexData => {
+export const getMesh = (data: Version0Type, noBump: boolean = false): Mesh => {
   let mesh: Mesh = {
     vertices: [],
     faces: [],
     normals: [],
-  };
+  }
 
   if (data[AttributeNames.LampShades].s.value === 0) {
     mesh = getCubeMesh(
       data[AttributeNames.LampShades].v.h.value,
       data[AttributeNames.LampShades].v.w.value,
       data[AttributeNames.LampShades].v.d.value,
-      (data[AttributeNames.LampShades] as any).v['Has Base'].s.value ? (data[AttributeNames.LampShades] as any).v['Has Base'].v.inset.value : undefined,
-      (data[AttributeNames.LampShades] as any).v['Has Base'].s.value ? (data[AttributeNames.LampShades] as any).v['Has Base'].v['h-base'].value : undefined
-    );
+      (data[AttributeNames.LampShades] as any).v['Has Base'].s.value
+        ? {
+            hBase: (data[AttributeNames.LampShades] as any).v['Has Base'].v['h-base'].value,
+            baseAngle: (data[AttributeNames.LampShades] as any).v['Has Base'].v['baseAngle'].value,
+          }
+        : undefined,
+      data[AttributeNames.LampShades].v['max radius'].value,
+      data[AttributeNames.LampShades].v['edge radius'].value,
+      5 / 2 ** data[AttributeNames.GlobalGeometry].subDivisions.value
+    )
   }
   if (data[AttributeNames.LampShades].s.value === 1) {
-    mesh = getSphereMesh(data[AttributeNames.LampShades].v.h.value, data[AttributeNames.LampShades].v.r0.value, data[AttributeNames.LampShades].v.r1.value);
+    mesh = getSphereMesh(
+      data[AttributeNames.LampShades].v.h.value,
+      data[AttributeNames.LampShades].v.r0.value,
+      data[AttributeNames.LampShades].v.r1.value,
+      data[AttributeNames.LampShades].v.r2.value
+    )
   }
   if (data[AttributeNames.LampShades].s.value === 2) {
     mesh = getCubeMesh(
@@ -64,21 +75,29 @@ export const getVertexData = (data: Version0Type): VertexData => {
       data[AttributeNames.LampShades].v['h-base'].value,
       data[AttributeNames.LampShades].v.w.value,
       data[AttributeNames.LampShades].v.d.value
-    );
+    )
   }
 
-  for (let i = 0; i < data[AttributeNames.Material].subDivisions.value; i++)
-    mesh = (data[AttributeNames.Material].smoothing.value < 0.01 ? subdivide : catmullClark)(mesh); //, smoothing);
+  if (data[AttributeNames.LampShades].s.value === 3) {
+    mesh = frauenKirche(
+      data[AttributeNames.LampShades].v.w.value,
+      Math.min(data[AttributeNames.LampShades].v['h-base'].value, data[AttributeNames.LampShades].v.h.value),
+      data[AttributeNames.LampShades].v.h.value - data[AttributeNames.LampShades].v['h-base'].value,
+      data[AttributeNames.LampShades].v['sides'].value,
+      data[AttributeNames.LampShades].v['alcove-percentage'].value,
+      data[AttributeNames.LampShades].v['alcove-expression'].value
+    )
+  }
 
-  mesh = bumpMesh(mesh, data);
+  // for (let i = 0; i < data[AttributeNames.GlobalGeometry].subDivisions.value; i++)
+  //   mesh = (data[AttributeNames.GlobalGeometry].smoothing.value < 0.01 ? subdivide : catmullClark)(mesh) //, smoothing);
 
-  return getVertexDataForMesh(mesh);
-};
+  return noBump ? mesh : bumpMesh(mesh, data)
+}
 
-export const getMaterialColor = (data: Version0Type): Color => {
-  const c = data[AttributeNames.Material].color;
-  return new Color(c.R.value / 255, c.G.value / 255, c.B.value / 255);
-};
+export const getMaterialColor = (c: ColorType): Color => new Color(c.R.value / 255, c.G.value / 255, c.B.value / 255)
 
-export const isDoubleSide = (data: Version0Type): boolean => data[AttributeNames.Material][AttributeNames.DoubleSided].value;
-export const isWireframe = (data: Version0Type): boolean => data[AttributeNames.Material][AttributeNames.Wireframe].value;
+export const isDoubleSide = (data: Version0Type): boolean =>
+  data[AttributeNames.Visualization][AttributeNames.DoubleSided].value
+export const isWireframe = (data: Version0Type): boolean =>
+  data[AttributeNames.Visualization][AttributeNames.Wireframe].value
