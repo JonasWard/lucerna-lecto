@@ -28,7 +28,7 @@ const getSpecificMethod = (type: number) => {
 }
 
 const getSdMethod = (data: Version0Type): ((v: V3, dataV: V3, n: V3, maxD?: number) => V3) => {
-  switch (data['Main Methods'].v.length) {
+  switch (data[AttributeNames.MainMethods].v.length) {
     case 1:
       return (v: V3, dataV: V3, n: V3, maxD?: number) =>
         V3.add(
@@ -37,9 +37,9 @@ const getSdMethod = (data: Version0Type): ((v: V3, dataV: V3, n: V3, maxD?: numb
             n,
             Math.min(
               maxD === undefined ? 1e3 : maxD,
-              (getSpecificMethod(data['Main Methods'].v[0].MainMethodEnum.value)(
+              (getSpecificMethod(data[AttributeNames.MainMethods].v[0].MainMethodEnum.value)(
                 dataV,
-                data['Main Methods'].v[0].MethodScale.value
+                data[AttributeNames.MainMethods].v[0].MethodScale.value
               ) *
                 0.5 +
                 0.5) *
@@ -55,12 +55,12 @@ const getSdMethod = (data: Version0Type): ((v: V3, dataV: V3, n: V3, maxD?: numb
             n,
             Math.min(
               maxD === undefined ? 1e3 : maxD,
-              (getSpecificMethod(data['Main Methods'].v[0].MainMethodEnum.value)(
+              (getSpecificMethod(data[AttributeNames.MainMethods].v[0].MainMethodEnum.value)(
                 dataV,
-                data['Main Methods'].v[0].MethodScale.value *
-                  getSpecificMethod(data['Main Methods'].v[1]!.MainMethodEnum.value)(
+                data[AttributeNames.MainMethods].v[0].MethodScale.value *
+                  getSpecificMethod(data[AttributeNames.MainMethods].v[1]!.MainMethodEnum.value)(
                     dataV,
-                    data['Main Methods'].v[1]!.MethodScale.value
+                    data[AttributeNames.MainMethods].v[1]!.MethodScale.value
                   )
               ) *
                 0.5 +
@@ -77,15 +77,15 @@ const getSdMethod = (data: Version0Type): ((v: V3, dataV: V3, n: V3, maxD?: numb
             n,
             Math.min(
               maxD === undefined ? 1e3 : maxD,
-              (getSpecificMethod(data['Main Methods'].v[0].MainMethodEnum.value)(
+              (getSpecificMethod(data[AttributeNames.MainMethods].v[0].MainMethodEnum.value)(
                 dataV,
-                data['Main Methods'].v[0].MethodScale.value *
-                  getSpecificMethod(data['Main Methods'].v[1]!.MainMethodEnum.value)(
+                data[AttributeNames.MainMethods].v[0].MethodScale.value *
+                  getSpecificMethod(data[AttributeNames.MainMethods].v[1]!.MainMethodEnum.value)(
                     dataV,
-                    data['Main Methods'].v[1]!.MethodScale.value *
-                      getSpecificMethod(data['Main Methods'].v[2]!.MainMethodEnum.value)(
+                    data[AttributeNames.MainMethods].v[1]!.MethodScale.value *
+                      getSpecificMethod(data[AttributeNames.MainMethods].v[2]!.MainMethodEnum.value)(
                         dataV,
-                        data['Main Methods'].v[2]!.MethodScale.value
+                        data[AttributeNames.MainMethods].v[2]!.MethodScale.value
                       )
                   )
               ) *
