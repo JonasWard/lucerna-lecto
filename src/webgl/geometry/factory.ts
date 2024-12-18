@@ -3,7 +3,6 @@ import { ColorType, Version0Type } from '../../modelDefinition/types/version0.ge
 import { VertexData } from './helpers/vertexData'
 import { AttributeNames } from '../../modelDefinition/enums/attributeNames'
 import { getCubeMesh } from './baseMeshes/cubeMesh'
-import { bumpMesh } from './mesh/bumping'
 import { Mesh } from './mesh/type'
 import { getSphereMesh } from './baseMeshes/ellipseMesh'
 import { frauenKirche } from './baseMeshes/frauenKirche'

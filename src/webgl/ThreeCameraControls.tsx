@@ -3,12 +3,10 @@ import { useThree } from '@react-three/fiber'
 import React, { useEffect, useRef } from 'react'
 import { AttributeNames } from 'src/modelDefinition/enums/attributeNames'
 import { Version0Type } from 'src/modelDefinition/types/version0.generatedType'
-import { Camera, Vector3 } from 'three'
 import { FloatDataEntry } from 'url-safe-bitpacking/dist/types'
 import { useData } from '../state/state'
-import { V3 } from './geometry/helpers/v3'
 
-const setCameraData = (camera: Camera, orbitControls: any) => {
+const setCameraData = (camera: any, orbitControls: any) => {
   const updateEntry = useData.getState().updateDataEntry
   const data = useData.getState().data as any as Version0Type
 
