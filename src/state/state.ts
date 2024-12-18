@@ -10,10 +10,15 @@ const isIOS = () => {
   )
 }
 
-const debounce = (callback: () => void, wait: number) => {
-  let timeoutId: number | undefined = undefined
-  window.clearTimeout(timeoutId)
-  timeoutId = window.setTimeout(callback, wait)
+const throttle = <T extends unknown[]>(callback: (...args: T) => void) => {
+  return (...args: T) => {
+    if (useData.getState().isWaiting) return
+
+    callback(...args)
+    useData.setState({ isWaiting: true })
+
+    setTimeout(() => useData.setState({ isWaiting: false }), isIOS() ? 110 : 25)
+  }
 }
 
 type DataStore = {
@@ -25,17 +30,19 @@ type DataStore = {
   redo: () => void
   undoStack: string[]
   redoStack: string[]
+  isWaiting: boolean
 }
 
 export const useData = create<DataStore>((set) => ({
   data: parserObjects.parser(),
   setData: (data) => set((state) => ({ ...state, data })),
   updateDataEntry: (data: DataEntry | DataEntry[]) =>
-    debounce(() => useData.getState().updateDataEntryNonThrottled(data), isIOS() ? 50 : 10),
+    throttle(() => useData.getState().updateDataEntryNonThrottled(data))(),
   updateDataEntryNonThrottled: (update: DataEntry | DataEntry[]) =>
     useData.getState().setData(parserObjects.updater(useData.getState().data, update)),
   undo: () => {},
   redo: () => {},
   undoStack: [],
   redoStack: [],
+  isWaiting: false,
 }))
