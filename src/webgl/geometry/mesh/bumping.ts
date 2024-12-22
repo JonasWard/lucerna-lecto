@@ -27,79 +27,56 @@ const getSpecificMethod = (type: number) => {
   }
 }
 
-const getSdMethod = (data: Version0Type): ((v: V3, dataV: V3, n: V3, maxD?: number) => V3) => {
+const getPositionMethod =
+  (data: Version0Type): ((v: V3, dataV: V3, n: V3, sdf: (dataV: V3) => number, maxD?: number) => V3) =>
+  (v: V3, dataV: V3, n: V3, sdf: (dataV: V3) => number, maxD?: number) =>
+    V3.add(
+      v,
+      V3.mul(
+        n,
+        Math.min(maxD === undefined ? 1e3 : maxD, (sdf(dataV) * 0.5 + 0.5) * data['Global Geometry'].expression.value)
+      )
+    )
+
+// method that constructs the distance method
+const getDistanceMethod = (data: Version0Type): ((dataV: V3) => number) => {
   switch (data[AttributeNames.MainMethods].v.length) {
     case 1:
-      return (v: V3, dataV: V3, n: V3, maxD?: number) =>
-        V3.add(
-          v,
-          V3.mul(
-            n,
-            Math.min(
-              maxD === undefined ? 1e3 : maxD,
-              (getSpecificMethod(data[AttributeNames.MainMethods].v[0].MainMethodEnum.value)(
-                dataV,
-                data[AttributeNames.MainMethods].v[0].MethodScale.value
-              ) *
-                0.5 +
-                0.5) *
-                data['Global Geometry'].expression.value
-            )
-          )
+      return (dataV: V3) =>
+        getSpecificMethod(data[AttributeNames.MainMethods].v[0].MainMethodEnum.value)(
+          dataV,
+          data[AttributeNames.MainMethods].v[0].MethodScale.value
         )
     case 2:
-      return (v: V3, dataV: V3, n: V3, maxD?: number) =>
-        V3.add(
-          v,
-          V3.mul(
-            n,
-            Math.min(
-              maxD === undefined ? 1e3 : maxD,
-              (getSpecificMethod(data[AttributeNames.MainMethods].v[0].MainMethodEnum.value)(
-                dataV,
-                data[AttributeNames.MainMethods].v[0].MethodScale.value *
-                  getSpecificMethod(data[AttributeNames.MainMethods].v[1]!.MainMethodEnum.value)(
-                    dataV,
-                    data[AttributeNames.MainMethods].v[1]!.MethodScale.value
-                  )
-              ) *
-                0.5 +
-                0.5) *
-                data['Global Geometry'].expression.value
+      return (dataV: V3) =>
+        getSpecificMethod(data[AttributeNames.MainMethods].v[0].MainMethodEnum.value)(
+          dataV,
+          data[AttributeNames.MainMethods].v[0].MethodScale.value *
+            getSpecificMethod(data[AttributeNames.MainMethods].v[1]!.MainMethodEnum.value)(
+              dataV,
+              data[AttributeNames.MainMethods].v[1]!.MethodScale.value
             )
-          )
         )
     case 3:
-      return (v: V3, dataV: V3, n: V3, maxD?: number) =>
-        V3.add(
-          v,
-          V3.mul(
-            n,
-            Math.min(
-              maxD === undefined ? 1e3 : maxD,
-              (getSpecificMethod(data[AttributeNames.MainMethods].v[0].MainMethodEnum.value)(
-                dataV,
-                data[AttributeNames.MainMethods].v[0].MethodScale.value *
-                  getSpecificMethod(data[AttributeNames.MainMethods].v[1]!.MainMethodEnum.value)(
-                    dataV,
-                    data[AttributeNames.MainMethods].v[1]!.MethodScale.value *
-                      getSpecificMethod(data[AttributeNames.MainMethods].v[2]!.MainMethodEnum.value)(
-                        dataV,
-                        data[AttributeNames.MainMethods].v[2]!.MethodScale.value
-                      )
-                  )
-              ) *
-                0.5 +
-                0.5) *
-                data['Global Geometry'].expression.value
+      return (dataV: V3) =>
+        getSpecificMethod(data[AttributeNames.MainMethods].v[0].MainMethodEnum.value)(
+          dataV,
+          data[AttributeNames.MainMethods].v[0].MethodScale.value *
+            getSpecificMethod(data[AttributeNames.MainMethods].v[1]!.MainMethodEnum.value)(
+              dataV,
+              data[AttributeNames.MainMethods].v[1]!.MethodScale.value *
+                getSpecificMethod(data[AttributeNames.MainMethods].v[2]!.MainMethodEnum.value)(
+                  dataV,
+                  data[AttributeNames.MainMethods].v[2]!.MethodScale.value
+                )
             )
-          )
         )
   }
 }
 
 export const getBumpMesh = (mesh: Mesh, data: Version0Type): Mesh => {
-  const sdMethod = getSdMethod(data)
+  const sdMethod = getPositionMethod(data)
+  const sdfMethod = getDistanceMethod(data)
 
   return {
     normals: mesh.normals,
@@ -109,6 +86,7 @@ export const getBumpMesh = (mesh: Mesh, data: Version0Type): Mesh => {
         v,
         { x: v.x, y: v.y, z: v.z * Z_SCALE },
         mesh.normals[i],
+        sdfMethod,
         mesh.maxDistances ? mesh.maxDistances[i] : undefined
       )
     ),
