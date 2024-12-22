@@ -44,7 +44,6 @@ export const ThreeMesh = () => {
       if (currentGeometrySettings !== geometrySettings) {
         const rawMesh = getMesh(data)
         const bumpedMesh = getBumpMesh(rawMesh, data)
-
         if (data[AttributeNames.Visualization].Vertices.value) {
           meshRef.current.geometry.dispose()
           vertexInstancedMesh.current = getVertexInstancedMeshForMesh(bumpedMesh)
