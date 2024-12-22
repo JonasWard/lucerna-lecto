@@ -124,6 +124,20 @@ const getVertexLoop = (w: number, d: number, z: number, r: number, goalEdgeLengt
   }
 }
 
+/**
+ * A cube-like mesh defined by a width and depth and a height
+ * if a base is given, a rectangular base with be considered of height hBase and transitioned into the rest of the patterned cube area
+ * |    |         |      |
+ * |    |   or     \    /
+ * |    |           |  |
+ * @param h - height
+ * @param w - width
+ * @param d - depth
+ * @param {hBase: number, baseAngle: number} base - optional base definition, subtracted from total height, hBase: straight part, baseAngle: angle in degrees at which the patterned edge is transitioned into the base
+ * @param maxRadius - maximum radius of the patterned area
+ * @param edgeRadius - base radius at which the pattern starts
+ * @param goalEdgeLength - goal spacing of the geometry to consider when creating the mesh
+ */
 export const getCubeMesh = (
   h: number,
   w: number,
@@ -145,17 +159,22 @@ export const getCubeMesh = (
   const r0 = Math.min(rMinRaw, Math.max(h, w) * 0.5)
 
   const dMax = rMax - r0
+  const w0 = w - 2 * r0
+  const d0 = d - 2 * r0
 
   const indices: number[][][] = []
   let baseIndexCount = 0
 
+  // parameters related to the regular patterned part of the mesh
+  let hCount = getDivisions(h, goalEdgeLength)
+  let h0Main = 0
+  let zMainDelta = h / hCount
+
+  // all the things related to the base
   if (base) {
     const { hBase, baseAngle } = base
 
-    const w0 = w - 2 * r0
-    const d0 = d - 2 * r0
-
-    // add the bottom of the base
+    // add the bottom part of the base
     ;[0, hBase].forEach((z) => {
       const loop = getVertexLoop(w0, d0, z, 0, goalEdgeLength)
       vertices.push(...loop.vertices)
@@ -165,7 +184,7 @@ export const getCubeMesh = (
       baseIndexCount += loop.vertices.length
     })
 
-    // add the last non movable part of the base
+    // add the top of the bottom part of the base
     const zMinDelta = Math.tan((baseAngle * Math.PI) / 180) * r0
     const zMaxDelta = Math.tan((baseAngle * Math.PI) / 180) * rMax
 
@@ -175,6 +194,7 @@ export const getCubeMesh = (
       v: zMaxDelta - zMinDelta,
     }
 
+    // in case the transition area would stick out of the top
     if (zMinDelta > h - hBase) {
       const loop = getVertexLoop(w0, d0, h, r0, goalEdgeLength)
       vertices.push(...loop.vertices)
@@ -182,10 +202,13 @@ export const getCubeMesh = (
       indices.push(loop.indices.map((ix) => ix.map((i) => i + baseIndexCount)))
       loop.vertices.forEach(() => maxDistances.push(0))
       baseIndexCount += loop.vertices.length
+
+      h0Main = h + zMainDelta
     } else {
       const l = V2.getLength(slopeD)
       const slopeDivsisions = getDivisions(l, goalEdgeLength)
 
+      // adding the transition area
       for (let i = 0; i < slopeDivsisions; i++) {
         const v = V2.add(vSlopeStart, V2.mul(slopeD, i / slopeDivsisions))
 
@@ -195,32 +218,23 @@ export const getCubeMesh = (
         indices.push(loop.indices.map((ix) => ix.map((i) => i + baseIndexCount)))
         loop.vertices.forEach(() => maxDistances.push(v.u - r0))
         baseIndexCount += loop.vertices.length
-      }
 
-      const hCount = getDivisions(h - hBase - zMaxDelta, goalEdgeLength)
-      const hDelta = (h - hBase - zMaxDelta) / hCount
-
-      for (let i = 0; i < hCount + 1; i++) {
-        const loop = getVertexLoop(w0, d0, hBase + zMaxDelta + i * hDelta, r0, goalEdgeLength)
-        vertices.push(...loop.vertices)
-        normals.push(...loop.normals)
-        indices.push(loop.indices.map((ix) => ix.map((i) => i + baseIndexCount)))
-        loop.vertices.forEach(() => maxDistances.push(dMax))
-        baseIndexCount += loop.vertices.length
+        // updating the parameters for the patterned area of the cube-shape
+        h0Main = hBase + zMaxDelta
+        hCount = getDivisions(h - h0Main, goalEdgeLength)
+        zMainDelta = (h - h0Main) / hCount
       }
     }
-  } else {
-    const count = getDivisions(h, goalEdgeLength)
-    const zDelta = h / count
-    for (let i = 0; i < count + 1; i++) {
-      const loop = getVertexLoop(w - 2 * edgeRadius, d - 2 * edgeRadius, i * zDelta, edgeRadius, goalEdgeLength)
-      vertices.push(...loop.vertices)
-      normals.push(...loop.normals)
-      indices.push(loop.indices.map((ix) => ix.map((i) => i + baseIndexCount)))
-      baseIndexCount += loop.vertices.length
-    }
+  }
 
-    for (let i = 0; i < vertices.length; i++) maxDistances.push(dMax)
+  // adding the main bulk of the cube, either using the default values, or the data set in the base if statement
+  for (let i = 0; i < hCount + 1; i++) {
+    const loop = getVertexLoop(w0, d0, h0Main + i * zMainDelta, r0, goalEdgeLength)
+    vertices.push(...loop.vertices)
+    normals.push(...loop.normals)
+    indices.push(loop.indices.map((ix) => ix.map((i) => i + baseIndexCount)))
+    loop.vertices.forEach(() => maxDistances.push(dMax))
+    baseIndexCount += loop.vertices.length
   }
 
   for (let i = 0; i < indices.length - 1; i++)
