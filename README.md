@@ -6,3 +6,10 @@ An antd based UI is used to handle the url-safe-bitpacking StateDataModel.
 ## Lamp Shade Generator
 
 This application can be used to generate custom stl's for single wall thickness 3d prints.
+
+
+## to install
+
+```
+bun install
+```
