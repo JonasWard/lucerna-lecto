@@ -19,16 +19,31 @@ export const getVertexDataForMesh = (mesh: Mesh): VertexData => {
   const positions: number[] = []
   const normals: number[] = []
 
+  let maxIndex = 0
+  for (let i = 0; i < indices.length; i++) maxIndex < indices[i] ? (maxIndex = indices[i]) : null
+
+  let maxHeight = -Infinity
+  let minHeight = Infinity
+
   for (let i = 0; i < mesh.vertices.length; i++) {
     mapV3(mesh.vertices[i], positions)
     mapV3(mesh.normals[i], normals)
+    if (mesh.vertices[i].z > maxHeight) maxHeight = mesh.vertices[i].z
+    if (mesh.vertices[i].z < minHeight) minHeight = mesh.vertices[i].z
   }
+
+  const uvs: number[] = []
+  for (let i = 0; i < mesh.vertices.length; i++)
+    uvs.push(
+      (mesh.vertices[i].z - minHeight) / (maxHeight - minHeight),
+      (Math.atan2(mesh.vertices[i].y, mesh.vertices[i].x) * 0.5) / Math.PI + 0.5
+    )
 
   const vertexData: VertexData = {
     positions: new Float32Array(positions),
     indices,
     normals: new Float32Array(normals),
-    uvs: new Float32Array([]),
+    uvs: new Float32Array(uvs),
   }
 
   return vertexData
