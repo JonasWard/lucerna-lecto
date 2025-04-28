@@ -1,8 +1,9 @@
 import { Canvas } from '@react-three/fiber'
 import React, { LegacyRef } from 'react'
-import { Version0Type } from '../modelDefinition/types/version0.generatedType'
-import { ThreeMesh } from './ThreeMesh'
+// import { ThreeMesh } from './ThreeMesh'
 import { ThreeCameraControls } from './ThreeCameraControls'
+import { LucernaLectoMesh } from './LucernaLectoMesh'
+import { ThreeMesh } from './ThreeMesh'
 
 export const ThreeCanvas: React.FC<{
   canvasRef: LegacyRef<HTMLCanvasElement>
@@ -17,8 +18,8 @@ export const ThreeCanvas: React.FC<{
       <ThreeCameraControls />
       <ambientLight intensity={Math.PI / 4} />
       <pointLight position={[0, 50, 0]} intensity={Math.PI * 1000} />
-      {/* <spotLight position={[800, 800, 800]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} /> */}
-      <ThreeMesh />
+      <LucernaLectoMesh />
+      {/* <ThreeMesh /> */}
     </Canvas>
   )
 }
