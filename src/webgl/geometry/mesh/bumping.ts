@@ -38,41 +38,19 @@ const getPositionMethod =
       )
     )
 
+const getLocalDistanceMethod = (data: Version0Type[AttributeNames.MainMethods]['v']): ((dataV: V3) => number) =>
+  data.length === 1
+    ? (dataV: V3) => getSpecificMethod(data[0].MainMethodEnum.value)(dataV, data[0].MethodScale.value)
+    : (dataV: V3) =>
+        getSpecificMethod(data[0].MainMethodEnum.value)(
+          dataV,
+          data[0].MethodScale.value *
+            getLocalDistanceMethod(data.slice(1) as Version0Type[AttributeNames.MainMethods]['v'])(dataV)
+        )
+
 // method that constructs the distance method
-const getDistanceMethod = (data: Version0Type): ((dataV: V3) => number) => {
-  switch (data[AttributeNames.MainMethods].v.length) {
-    case 1:
-      return (dataV: V3) =>
-        getSpecificMethod(data[AttributeNames.MainMethods].v[0].MainMethodEnum.value)(
-          dataV,
-          data[AttributeNames.MainMethods].v[0].MethodScale.value
-        )
-    case 2:
-      return (dataV: V3) =>
-        getSpecificMethod(data[AttributeNames.MainMethods].v[0].MainMethodEnum.value)(
-          dataV,
-          data[AttributeNames.MainMethods].v[0].MethodScale.value *
-            getSpecificMethod(data[AttributeNames.MainMethods].v[1]!.MainMethodEnum.value)(
-              dataV,
-              data[AttributeNames.MainMethods].v[1]!.MethodScale.value
-            )
-        )
-    case 3:
-      return (dataV: V3) =>
-        getSpecificMethod(data[AttributeNames.MainMethods].v[0].MainMethodEnum.value)(
-          dataV,
-          data[AttributeNames.MainMethods].v[0].MethodScale.value *
-            getSpecificMethod(data[AttributeNames.MainMethods].v[1]!.MainMethodEnum.value)(
-              dataV,
-              data[AttributeNames.MainMethods].v[1]!.MethodScale.value *
-                getSpecificMethod(data[AttributeNames.MainMethods].v[2]!.MainMethodEnum.value)(
-                  dataV,
-                  data[AttributeNames.MainMethods].v[2]!.MethodScale.value
-                )
-            )
-        )
-  }
-}
+const getDistanceMethod = (data: Version0Type): ((dataV: V3) => number) =>
+  getLocalDistanceMethod(data[AttributeNames.MainMethods].v)
 
 export const getBumpMesh = (mesh: Mesh, data: Version0Type): Mesh => {
   const sdMethod = getPositionMethod(data)

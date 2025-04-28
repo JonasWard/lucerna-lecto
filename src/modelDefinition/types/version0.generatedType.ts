@@ -1325,6 +1325,23 @@ export type Version0Type = {
               precision: 3
               significand: 20
             }
+          }
+        ]
+      }
+    | {
+        s: { value: 1; name: 'Main Methods'; type: DataType.INT; min: 1; max: 3; bits: 2 }
+        v: [
+          {
+            ['MainMethodEnum']: { value: number; name: 'MainMethodEnum'; type: DataType.ENUM; max: 6; bits: 3 }
+            ['MethodScale']: {
+              value: number
+              name: 'MethodScale'
+              type: DataType.FLOAT
+              min: 0.001
+              max: 1000
+              precision: 3
+              significand: 20
+            }
           },
           {
             ['MainMethodEnum']: { value: number; name: 'MainMethodEnum'; type: DataType.ENUM; max: 6; bits: 3 }

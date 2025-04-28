@@ -13,7 +13,7 @@ export enum MethodNames {
   None = 'None',
 }
 
-export const mainMethods = [
+export const MainMethods = [
   MethodNames.Gyroid,
   MethodNames.SchwarzD,
   MethodNames.SchwarzP,
@@ -21,10 +21,13 @@ export const mainMethods = [
   MethodNames.Neovius,
   MethodNames.Mandelbrot,
   MethodNames.Sin,
-];
-export const preProcessingMethods = [MethodNames.Complex, MethodNames.Modulus, MethodNames.AlternatingMoldus];
-export const postProcessingMethods = [MethodNames.Sin, MethodNames.Cos];
+] as const
 
-export const MainMethodLabels = mainMethods.map((value, index) => ({ value: index, label: value }));
+export type MainMethodType = (typeof MainMethods)[number]
+
+export const preProcessingMethods = [MethodNames.Complex, MethodNames.Modulus, MethodNames.AlternatingMoldus]
+export const postProcessingMethods = [MethodNames.Sin, MethodNames.Cos]
+
+export const MainMethodLabels = MainMethods.map((value, index) => ({ value: index, label: value }))
 export const PreProcessingMethodLabels = preProcessingMethods.map((value, index) => ({ value: index, label: value }));
 export const PostProcessingMethodLabels = postProcessingMethods.map((value, index) => ({ value: index, label: value }));
