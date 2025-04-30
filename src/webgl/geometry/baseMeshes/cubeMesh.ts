@@ -1,3 +1,4 @@
+import { getArcData } from '../helpers'
 import { V2 } from '../helpers/v2'
 import { V3 } from '../helpers/v3'
 import { Mesh } from '../mesh/type'
@@ -137,6 +138,7 @@ const getVertexLoop = (w: number, d: number, z: number, r: number, goalEdgeLengt
  * @param maxRadius - maximum radius of the patterned area
  * @param edgeRadius - base radius at which the pattern starts
  * @param goalEdgeLength - goal spacing of the geometry to consider when creating the mesh
+ * @param maxExpression - max expression length
  */
 export const getCubeMesh = (
   h: number,
@@ -148,7 +150,8 @@ export const getCubeMesh = (
   },
   maxRadius: number = 5,
   edgeRadius: number = 5,
-  goalEdgeLength: number = MAX_BASE_GRID
+  goalEdgeLength: number = MAX_BASE_GRID,
+  maxExpression: number = 1
 ): Mesh => {
   const vertices: V3[] = []
   const normals: V3[] = []
@@ -158,7 +161,6 @@ export const getCubeMesh = (
   const [rMinRaw, rMax] = [maxRadius, edgeRadius].sort((a, b) => a - b)
   const r0 = Math.min(rMinRaw, Math.max(h, w) * 0.5)
 
-  const dMax = rMax - r0
   const w0 = w - 2 * r0
   const d0 = d - 2 * r0
 
@@ -216,7 +218,7 @@ export const getCubeMesh = (
         vertices.push(...loop.vertices)
         normals.push(...loop.normals)
         indices.push(loop.indices.map((ix) => ix.map((i) => i + baseIndexCount)))
-        loop.vertices.forEach(() => maxDistances.push(v.u - r0))
+        loop.vertices.forEach(() => maxDistances.push(Math.min(v.u - r0, maxExpression)))
         baseIndexCount += loop.vertices.length
 
         // updating the parameters for the patterned area of the cube-shape
@@ -227,14 +229,22 @@ export const getCubeMesh = (
     }
   }
 
+  const { dYMin, getDMax } = getArcData(maxExpression, base?.baseAngle ?? 20)
+
+  let localLoop: LoopType | null = null
+
   // adding the main bulk of the cube, either using the default values, or the data set in the base if statement
   for (let i = 0; i < hCount + 1; i++) {
-    const loop = getVertexLoop(w0, d0, h0Main + i * zMainDelta, r0, goalEdgeLength)
-    vertices.push(...loop.vertices)
-    normals.push(...loop.normals)
-    indices.push(loop.indices.map((ix) => ix.map((i) => i + baseIndexCount)))
-    loop.vertices.forEach(() => maxDistances.push(dMax))
-    baseIndexCount += loop.vertices.length
+    const z = h0Main + i * zMainDelta
+    localLoop = getVertexLoop(w0, d0, z, r0, goalEdgeLength)
+    vertices.push(...localLoop.vertices)
+    normals.push(...localLoop.normals)
+    indices.push(localLoop.indices.map((ix) => ix.map((i) => i + baseIndexCount)))
+    if (z > h - dYMin) {
+      const maxD = getDMax(h - z)
+      localLoop.vertices.forEach(() => maxDistances.push(maxD))
+    } else localLoop.vertices.forEach(() => maxDistances.push(maxExpression))
+    baseIndexCount += localLoop.vertices.length
   }
 
   for (let i = 0; i < indices.length - 1; i++)
