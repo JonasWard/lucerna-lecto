@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Version0Type } from 'src/modelDefinition/types/version0.generatedType'
 import { getMesh } from './geometry/factory'
 import { getVertexDataForMesh } from './geometry/mesh/vertexData'
@@ -24,7 +24,8 @@ export const LucernaLectoMesh: React.FC = () => {
 
   useEffect(() => {
     if (meshRef.current) {
-      const meshVertexData = getVertexDataForMesh(getMesh(data))
+      const freshMesh = getMesh(data)
+      const meshVertexData = getVertexDataForMesh(freshMesh)
 
       const rawBufferGeometry = new BufferGeometry()
 
@@ -32,6 +33,7 @@ export const LucernaLectoMesh: React.FC = () => {
       rawBufferGeometry.attributes['position'] = new BufferAttribute(meshVertexData.positions, 3)
       rawBufferGeometry.attributes['normal'] = new BufferAttribute(meshVertexData.normals, 3)
       rawBufferGeometry.attributes['uv'] = new BufferAttribute(meshVertexData.uvs, 2)
+      rawBufferGeometry.attributes['maxDistance'] = new BufferAttribute(new Float32Array(freshMesh.maxDistances!), 1)
       meshRef.current.geometry.dispose()
       meshRef.current.geometry = rawBufferGeometry
     }

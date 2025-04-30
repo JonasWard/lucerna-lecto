@@ -56,7 +56,8 @@ export const getMesh = (data: Version0Type): Mesh => {
         : undefined,
       data[AttributeNames.LampShades].v['max radius'].value,
       data[AttributeNames.LampShades].v['edge radius'].value,
-      5 / 2 ** data[AttributeNames.GlobalGeometry].subDivisions.value
+      5 / 2 ** data[AttributeNames.GlobalGeometry].subDivisions.value,
+      data[AttributeNames.GlobalGeometry].expression.value
     )
   }
   if (data[AttributeNames.LampShades].s.value === 1) {
@@ -73,7 +74,10 @@ export const getMesh = (data: Version0Type): Mesh => {
       data[AttributeNames.LampShades].v.inset.value,
       data[AttributeNames.LampShades].v['h-base'].value,
       data[AttributeNames.LampShades].v.w.value,
-      data[AttributeNames.LampShades].v.d.value
+      data[AttributeNames.LampShades].v.d.value,
+      undefined,
+      undefined,
+      data[AttributeNames.GlobalGeometry].expression.value
     )
   }
 

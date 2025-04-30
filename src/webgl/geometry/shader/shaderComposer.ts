@@ -24,6 +24,7 @@ export const getShaderDistanceMethod = (data: Version0Type[AttributeNames.MainMe
  */
 export const getDistanceContentString = (data: Version0Type[AttributeNames.MainMethods]['v']): string =>
   [
+    'varying float mD;',
     'varying vec3 p;',
     ...[...new Set(data.map((d) => MainMethods[d.MainMethodEnum.value]))].map((method) => ShaderMethods[method]),
     `float sdMain(vec3 v) { return ${getShaderDistanceMethod(data)}; }`,
@@ -48,21 +49,22 @@ export const getFragmentShader = (data: Version0Type): string => `const vec3 col
 ${getDistanceContentString(data[AttributeNames.MainMethods]['v'])}
 
 void main() {
-  gl_FragColor = vec4(color * (1.0 - (sdMain(p) * 0.1)), 1.0);
+  float d = max(0.0, min(mD,sdMain(p)));
+  gl_FragColor = vec4(color * (1.0 - (d * 0.1)), 1.0);
 }`
 
 /**
  * Method that constructs the vertex shader
  * @param data - `Version0Type`
  */
-export const getVertexShader = (data: Version0Type): string => `${getDistanceContentString(
-  data[AttributeNames.MainMethods]['v']
-)}
+export const getVertexShader = (data: Version0Type): string => `attribute float maxDistance;
+${getDistanceContentString(data[AttributeNames.MainMethods]['v'])}
 
 void main() { 
-  vec3 transformed = position + normal * sdMain(position) * ${getStringRepresentationOfValue(
+  mD = maxDistance;
+  vec3 transformed = position + normal * max(0.0, min(mD,sdMain(position) * ${getStringRepresentationOfValue(
     data[AttributeNames.GlobalGeometry].expression.value
-  )};
+  )}));
   gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed, 1.0);
   p = position;
 }`
