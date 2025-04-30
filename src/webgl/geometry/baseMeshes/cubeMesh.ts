@@ -250,6 +250,17 @@ export const getCubeMesh = (
   for (let i = 0; i < indices.length - 1; i++)
     for (let j = 0; j < indices[i].length; j++) faces.push(...getFacesForIndices(indices[i][j], indices[i + 1][j]))
 
+  // adding a closed top
+  if (localLoop) {
+    const index = vertices.length
+    const index0 = index - localLoop.vertices.length
+    for (let i = 0; i < localLoop.vertices.length; i++)
+      faces.push([index0 + i, index, index0 + ((i + 1) % localLoop.vertices.length)])
+    vertices.push(V3.getCenter(localLoop.vertices))
+    normals.push(V3.Origin)
+    maxDistances.push(0)
+  }
+
   return {
     vertices,
     normals,
