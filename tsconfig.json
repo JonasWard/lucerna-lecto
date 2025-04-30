@@ -17,8 +17,8 @@
     "skipLibCheck": true,
     "strict": true,
     "strictNullChecks": true,
-    "lib": ["ES2015", "DOM"],
-    "target": "ES6",
+    "lib": ["ESNext", "DOM"],
+    "target": "ESNext",
     "module": "ES2020",
     "baseUrl": ".",
     "paths": {
