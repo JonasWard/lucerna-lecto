@@ -12,7 +12,7 @@ import {
   PiWaveSine,
 } from 'react-icons/pi'
 import { GiArabicDoor, GiBridge, GiFootprint, GiPoolTriangle, GiShardSword, GiWireframeGlobe } from 'react-icons/gi'
-import { MdOutlineLayers, MdGrid4X4, MdOutlineFitScreen } from 'react-icons/md'
+import { MdOutlineLayers, MdGrid4X4, MdOutlineFitScreen, MdPattern } from 'react-icons/md'
 import { FiLayers } from 'react-icons/fi'
 import { DataType } from 'url-safe-bitpacking'
 import { AttributeNames } from 'src/modelDefinition/enums/attributeNames'
@@ -20,8 +20,7 @@ import { VersionNames } from 'src/modelDefinition/enums/versionNames'
 import { MethodNames } from 'src/modelDefinition/types/methodSemantics'
 import { AiOutlineBgColors } from 'react-icons/ai'
 import { HiOutlineColorSwatch } from 'react-icons/hi'
-import { BsFillGrid3X3GapFill, BsGrid3X3, BsLamp } from 'react-icons/bs'
-import { TbArrowCurveLeft, TbCylinder, TbHexagonalPrism, TbHexagons, TbSum } from 'react-icons/tb'
+import { BsArrowsVertical, BsFillGrid3X3GapFill, BsGrid3X3, BsLamp } from 'react-icons/bs'
 import { GrPaint } from 'react-icons/gr'
 import { VscDatabase } from 'react-icons/vsc'
 
@@ -217,6 +216,10 @@ export const getIconForKey = (
       return { mainIcon: <GiShardSword size={size} /> }
     case AttributeNames.Vertices:
       return { mainIcon: <IoCubeOutline size={size} /> }
+    case AttributeNames.ExpressionScale:
+      return { mainIcon: <BsArrowsVertical size={size} /> }
+    case AttributeNames.Pattern:
+      return { mainIcon: <MdPattern size={size} /> }
     default:
       return { mainIcon: name }
   }
