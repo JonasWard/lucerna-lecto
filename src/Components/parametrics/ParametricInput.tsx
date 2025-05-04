@@ -17,7 +17,7 @@ const displayTypeMap = {
       : DisplayType.POPOVER
     : DisplayType.HIDDEN,
   [AttributeNames.LampShades]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
-  [AttributeNames.MainMethods]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
+  [AttributeNames.Pattern]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
   [AttributeNames.Footprint]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
   [AttributeNames.Heights]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
   [AttributeNames.Base]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
