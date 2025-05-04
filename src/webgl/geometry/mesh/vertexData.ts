@@ -9,7 +9,7 @@ const triangulateIndices = (indices: number[], indicesArray: number[] = []) => {
       triangulateIndices([indices[0], indices[i + 1], indices[i + 2]], indicesArray)
 }
 
-const mapV3 = (v3: V3, vArray: number[]) => vArray.push(v3.x, v3.z, -v3.y)
+const mapV3 = (v3: V3, vArray: number[]) => vArray.push(v3.x, v3.y, v3.z)
 
 export const getVertexDataForMesh = (mesh: Mesh): VertexData => {
   const indices: number[] = []
