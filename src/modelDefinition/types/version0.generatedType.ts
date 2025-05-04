@@ -28,6 +28,57 @@ export type ColorType = {
   }
 }
 
+export type LocalTransformType = {
+  [AttributeNames.X]: {
+    value: number
+    type: DataType.FLOAT
+    min: -1000
+    max: 1000
+    precision: 1
+    name: AttributeNames.X
+  }
+  [AttributeNames.Y]: {
+    value: number
+    type: DataType.FLOAT
+    min: -1000
+    max: 1000
+    precision: 1
+    name: AttributeNames.Y
+  }
+  [AttributeNames.Z]: {
+    value: number
+    type: DataType.FLOAT
+    min: -1000
+    max: 1000
+    precision: 1
+    name: AttributeNames.Z
+  }
+  [AttributeNames.Pitch]: {
+    value: number
+    type: DataType.FLOAT
+    min: -180
+    max: 180
+    precision: 1
+    name: AttributeNames.Pitch
+  }
+  [AttributeNames.Roll]: {
+    value: number
+    type: DataType.FLOAT
+    min: -180
+    max: 180
+    precision: 1
+    name: AttributeNames.Roll
+  }
+  [AttributeNames.Yaw]: {
+    value: number
+    type: DataType.FLOAT
+    min: -180
+    max: 180
+    precision: 1
+    name: AttributeNames.Yaw
+  }
+}
+
 export type ExtrusionSquareValue = {
   ['Upper Inset']: {
     value: number
@@ -1222,6 +1273,11 @@ export type Version0Type = {
       precision: 3
       significand: 13
     }
+    ['shader-based']: {
+      value: boolean
+      name: 'shader-based'
+      type: DataType.BOOLEAN
+    }
   }
   ['Lamp Shades']:
     | {
@@ -1310,94 +1366,38 @@ export type Version0Type = {
           ['w']: { value: number; name: 'w'; type: DataType.FLOAT; min: 30; max: 150; precision: 1; significand: 11 }
         }
       }
-  ['Main Methods']:
-    | {
-        s: { value: 1; name: 'Main Methods'; type: DataType.INT; min: 1; max: 3; bits: 2 }
-        v: [
-          {
-            ['MainMethodEnum']: { value: number; name: 'MainMethodEnum'; type: DataType.ENUM; max: 6; bits: 3 }
-            ['MethodScale']: {
-              value: number
-              name: 'MethodScale'
-              type: DataType.FLOAT
-              min: 0.001
-              max: 1000
-              precision: 3
-              significand: 20
-            }
+  [AttributeNames.Pattern]: {
+    [AttributeNames.ExpressionScale]: { value: number; name: AttributeNames.ExpressionScale; type: DataType.FLOAT }
+    [AttributeNames.MainMethods]: {
+      s: { value: 1 | 2 | 3; name: AttributeNames.MainMethods; type: DataType.INT; min: 1; max: 3; bits: 2 }
+      v: {
+        [AttributeNames.MethodEnumMain]: {
+          value: number
+          name: AttributeNames.MethodEnumMain
+          type: DataType.ENUM
+          max: 6
+          bits: 3
+        }
+        [AttributeNames.MethodScale]: {
+          value: number
+          name: AttributeNames.MethodScale
+          type: DataType.FLOAT
+          min: 0.001
+          max: 1000
+          precision: 3
+          significand: 20
+        }
+        [AttributeNames.LocalTransformationOrNot]: {
+          s: {
+            value: boolean
+            type: DataType.BOOLEAN
+            name: AttributeNames.LocalTransformationOrNot
           }
-        ]
-      }
-    | {
-        s: { value: 1; name: 'Main Methods'; type: DataType.INT; min: 1; max: 3; bits: 2 }
-        v: [
-          {
-            ['MainMethodEnum']: { value: number; name: 'MainMethodEnum'; type: DataType.ENUM; max: 6; bits: 3 }
-            ['MethodScale']: {
-              value: number
-              name: 'MethodScale'
-              type: DataType.FLOAT
-              min: 0.001
-              max: 1000
-              precision: 3
-              significand: 20
-            }
-          },
-          {
-            ['MainMethodEnum']: { value: number; name: 'MainMethodEnum'; type: DataType.ENUM; max: 6; bits: 3 }
-            ['MethodScale']: {
-              value: number
-              name: 'MethodScale'
-              type: DataType.FLOAT
-              min: 0.001
-              max: 1000
-              precision: 3
-              significand: 20
-            }
-          }
-        ]
-      }
-    | {
-        s: { value: 2; name: 'Main Methods'; type: DataType.INT; min: 1; max: 3; bits: 2 }
-        v: [
-          {
-            ['MainMethodEnum']: { value: number; name: 'MainMethodEnum'; type: DataType.ENUM; max: 6; bits: 3 }
-            ['MethodScale']: {
-              value: number
-              name: 'MethodScale'
-              type: DataType.FLOAT
-              min: 0.001
-              max: 1000
-              precision: 3
-              significand: 20
-            }
-          },
-          {
-            ['MainMethodEnum']: { value: number; name: 'MainMethodEnum'; type: DataType.ENUM; max: 6; bits: 3 }
-            ['MethodScale']: {
-              value: number
-              name: 'MethodScale'
-              type: DataType.FLOAT
-              min: 0.001
-              max: 1000
-              precision: 3
-              significand: 20
-            }
-          },
-          {
-            ['MainMethodEnum']: { value: number; name: 'MainMethodEnum'; type: DataType.ENUM; max: 6; bits: 3 }
-            ['MethodScale']: {
-              value: number
-              name: 'MethodScale'
-              type: DataType.FLOAT
-              min: 0.001
-              max: 1000
-              precision: 3
-              significand: 20
-            }
-          }
-        ]
-      }
+          v: LocalTransformType
+        }
+      }[]
+    }
+  }
   ['Vertical Profile']:
     | {
         s: { value: true; name: 'Vertical Profile'; type: DataType.BOOLEAN }
@@ -1419,17 +1419,12 @@ export type Version0Type = {
         }
       }
   ['Material']: {
-    ['Normal Material']:
-      | {
-          s: { value: true; name: 'Normal Material'; type: DataType.BOOLEAN }
-          v: {
-            ['color']: ColorType
-          }
-        }
-      | {
-          s: { value: false; name: 'Normal Material'; type: DataType.BOOLEAN }
-          v: {}
-        }
+    ['color']: ColorType
+    ['color-expression']: {
+      value: number
+      name: 'color-expression'
+      type: DataType.FLOAT
+    }
   }
   ['Visualization']: {
     ['Wireframe']: { value: boolean; name: 'Wireframe'; type: DataType.BOOLEAN }

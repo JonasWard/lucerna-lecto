@@ -13,12 +13,12 @@ export const LucernaLectoMesh: React.FC = () => {
   const [globalGeometryString, setGlobalGeometryString] = useState(
     JSON.stringify([data[AttributeNames.GlobalGeometry]])
   )
-  const [mainMethodsString, setMainMethodsString] = useState(JSON.stringify([data[AttributeNames.MainMethods]]))
+  const [mainMethodsString, setMainMethodsString] = useState(JSON.stringify([data[AttributeNames.Pattern]]))
 
   useEffect(() => {
     const newGlobalGeometryString = JSON.stringify([data[AttributeNames.GlobalGeometry]])
     if (newGlobalGeometryString !== globalGeometryString) setGlobalGeometryString(newGlobalGeometryString)
-    const newMainMethodsString = JSON.stringify([data[AttributeNames.MainMethods]])
+    const newMainMethodsString = JSON.stringify([data[AttributeNames.Pattern]])
     if (newMainMethodsString !== mainMethodsString) setMainMethodsString(newMainMethodsString)
   }, [data])
 

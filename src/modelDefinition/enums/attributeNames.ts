@@ -98,4 +98,7 @@ export enum AttributeNames {
   GlobalGeometry = 'Global Geometry',
   Visualization = 'Visualization',
   Vertices = 'Vertices',
+  Pattern = 'Pattern',
+  ExpressionScale = 'Expression Scale',
+  LocalTransformationOrNot = 'LocalTransformationOrNot',
 }
