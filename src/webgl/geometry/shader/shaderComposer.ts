@@ -3,6 +3,11 @@ import { ColorType, LocalTransformType, Version0Type } from 'src/modelDefinition
 import { MainMethods } from 'src/modelDefinition/types/methodSemantics'
 import { getSdMethodNameForMethodName, ShaderMethods } from './shaderMethods'
 
+const SwapYZ = `mat3(
+  1.0, 0.0, 0.0,
+  0.0, 0.0, 1.0,
+  0.0, -1.0, 0.0
+)`
 const getStringRepresentationOfValue = (value: number): string => value.toFixed(3)
 
 const getMat3FromNumbers = (
@@ -34,18 +39,23 @@ const getTranslationVector = (data: LocalTransformType): string =>
     data[AttributeNames.Y].value
   )},${getStringRepresentationOfValue(data[AttributeNames.Z].value)})`
 
-const getTranslationData = (data: Version0Type[AttributeNames.Pattern][AttributeNames.MainMethods]['v'][0]): string =>
-  data[AttributeNames.LocalTransformationOrNot].s.value
-    ? `v * ${getRotationMatrix(data[AttributeNames.LocalTransformationOrNot].v)} + ${getTranslationVector(
-        data[AttributeNames.LocalTransformationOrNot].v
-      )}`
-    : 'v'
+const getTranslationData = (data: Version0Type[AttributeNames.Pattern][AttributeNames.MainMethods]['v'][0]): string => {
+  if (data[AttributeNames.LocalTransformationOrNot].s.value) {
+    const translationVector = getTranslationVector(data[AttributeNames.LocalTransformationOrNot].v)
+    const rotationMatrix = getRotationMatrix(data[AttributeNames.LocalTransformationOrNot].v)
+
+    return `(v - ${translationVector}) * ${rotationMatrix} + ${translationVector}`
+  }
+  return 'v'
+}
 
 /**
  * Method that constructs the content of the distance method
  * @param data - `Version0Type[AttributeNames.MainMethods]['v']`
  */
-export const getShaderDistanceMethod = (data: Version0Type[AttributeNames.Pattern][AttributeNames.MainMethods]['v']): string =>
+export const getShaderDistanceMethod = (
+  data: Version0Type[AttributeNames.Pattern][AttributeNames.MainMethods]['v']
+): string =>
   data.length === 1
     ? `${getSdMethodNameForMethodName(MainMethods[data[0].MainMethodEnum.value])}(${getTranslationData(
         data[0]
@@ -85,9 +95,9 @@ export const getColorString = (color: ColorType): string =>
  * @returns
  */
 const getScale = (data: Version0Type): string =>
-  `vec3(1.0, ${getStringRepresentationOfValue(
+  `vec3(1.0, 1.0, ${getStringRepresentationOfValue(
     1 / data[AttributeNames.Pattern][AttributeNames.ExpressionScale].value
-  )}, 1.0)`
+  )})`
 
 /**
  * Method that constructs the fragment shader
@@ -117,6 +127,6 @@ void main() {
   vec3 transformed = position + normal * max(0.0, min(mD,sdMain(position * ${getScale(
     data
   )}) * ${getStringRepresentationOfValue(data[AttributeNames.GlobalGeometry].expression.value)}));
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed, 1.0);
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed * ${SwapYZ}, 1.0);
   p = position;
 }`
