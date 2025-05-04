@@ -17,6 +17,11 @@ const mainMethodVersionStack: ArrayEntryDataType = [
   ],
 ]
 
+const patternSettings: SingleLevelContentType[] = [
+  DataEntryFactory.createFloat(2.5, 0.1, 10, 2, AttributeNames.ExpressionScale),
+  [AttributeNames.MainMethods, mainMethodVersionStack],
+]
+
 const viewportParameters: SingleLevelContentType[] = [
   [
     AttributeNames.OrbitControlTarget,
@@ -39,22 +44,17 @@ const viewportParameters: SingleLevelContentType[] = [
   DataEntryFactory.createFloat(0, -1000, 1000, 1, AttributeNames.Radius),
 ]
 
-const normalsMaterial: OptionalEntryDataType = [
-  false,
+const materialDefinition: SingleLevelContentType[] = [
   [
+    'color',
     [
-      'color',
-      [
-        DataEntryFactory.createInt(245, 0, 255, AttributeNames.R),
-        DataEntryFactory.createInt(219, 0, 255, AttributeNames.G),
-        DataEntryFactory.createInt(163, 0, 255, AttributeNames.B),
-      ],
+      DataEntryFactory.createInt(245, 0, 255, AttributeNames.R),
+      DataEntryFactory.createInt(219, 0, 255, AttributeNames.G),
+      DataEntryFactory.createInt(163, 0, 255, AttributeNames.B),
     ],
   ],
-  [],
+  DataEntryFactory.createFloat(0.05, 0.01, 0.5, 2, 'color-expression'),
 ]
-
-const materialDefinition: SingleLevelContentType[] = [[AttributeNames.NormalMaterial, normalsMaterial]]
 
 const visualizationDefintion: SingleLevelContentType[] = [
   DataEntryFactory.createBoolean(false, AttributeNames.Wireframe),
@@ -123,7 +123,7 @@ export const verionArrayDefinition0: SingleLevelContentType[] = [
   [AttributeNames.Viewport, viewportParameters],
   [AttributeNames.GlobalGeometry, globalGeometry],
   [AttributeNames.LampShades, lampShades],
-  [AttributeNames.MainMethods, mainMethodVersionStack],
+  [AttributeNames.Pattern, patternSettings],
   [AttributeNames.VerticalProfile, hasverticalProfileDefinition],
   [AttributeNames.Material, materialDefinition],
   [AttributeNames.Visualization, visualizationDefintion],
