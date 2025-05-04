@@ -28,6 +28,57 @@ export type ColorType = {
   }
 }
 
+export type LocalTransformType = {
+  [AttributeNames.X]: {
+    value: number
+    type: DataType.FLOAT
+    min: -1000
+    max: 1000
+    precision: 1
+    name: AttributeNames.X
+  }
+  [AttributeNames.Y]: {
+    value: number
+    type: DataType.FLOAT
+    min: -1000
+    max: 1000
+    precision: 1
+    name: AttributeNames.Y
+  }
+  [AttributeNames.Z]: {
+    value: number
+    type: DataType.FLOAT
+    min: -1000
+    max: 1000
+    precision: 1
+    name: AttributeNames.Z
+  }
+  [AttributeNames.Pitch]: {
+    value: number
+    type: DataType.FLOAT
+    min: -180
+    max: 180
+    precision: 1
+    name: AttributeNames.Pitch
+  }
+  [AttributeNames.Roll]: {
+    value: number
+    type: DataType.FLOAT
+    min: -180
+    max: 180
+    precision: 1
+    name: AttributeNames.Roll
+  }
+  [AttributeNames.Yaw]: {
+    value: number
+    type: DataType.FLOAT
+    min: -180
+    max: 180
+    precision: 1
+    name: AttributeNames.Yaw
+  }
+}
+
 export type ExtrusionSquareValue = {
   ['Upper Inset']: {
     value: number
@@ -1336,9 +1387,14 @@ export type Version0Type = {
           precision: 3
           significand: 20
         }
+        [AttributeNames.LocalTransformationOrNot]: {
+          s: {
+            value: boolean
+            type: DataType.BOOLEAN
+            name: AttributeNames.LocalTransformationOrNot
           }
-        ]
-      }
+          v: LocalTransformType
+        }
       }[]
     }
   }

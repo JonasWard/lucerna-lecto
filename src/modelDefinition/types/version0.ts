@@ -9,11 +9,25 @@ import {
 } from 'url-safe-bitpacking/dist/types'
 import { MainMethodLabels } from './methodSemantics'
 
+const localTransformationOrNot: OptionalEntryDataType = [
+  false,
+  [],
+  [
+    DataEntryFactory.createFloat(0, -1000, 1000, 1, AttributeNames.X),
+    DataEntryFactory.createFloat(0, -1000, 1000, 1, AttributeNames.Y),
+    DataEntryFactory.createFloat(0, -1000, 1000, 1, AttributeNames.Z),
+    DataEntryFactory.createFloat(0, -180, 180, 1, AttributeNames.Pitch),
+    DataEntryFactory.createFloat(0, -180, 180, 1, AttributeNames.Roll),
+    DataEntryFactory.createFloat(0, -180, 180, 1, AttributeNames.Yaw),
+  ],
+]
+
 const mainMethodVersionStack: ArrayEntryDataType = [
   [1, 3],
   [
     DataEntryFactory.createEnum(0, MainMethodLabels.length - 1, `${AttributeNames.MethodEnumMain}`),
     DataEntryFactory.createFloat(1, 0.001, 1000, 3, `${AttributeNames.MethodScale}`),
+    [AttributeNames.LocalTransformationOrNot, localTransformationOrNot],
   ],
 ]
 
@@ -115,6 +129,7 @@ const globalGeometry: SingleLevelContentType[] = [
   DataEntryFactory.createInt(0, 0, 6, 'subDivisions'),
   DataEntryFactory.createFloat(0.5, 0, 1, 3, 'smoothing'),
   DataEntryFactory.createFloat(0.1, 0.01, 25, 2, 'expression'),
+  DataEntryFactory.createBoolean(true, 'shader-based'),
 ]
 
 const hasverticalProfileDefinition: OptionalEntryDataType = [false, [], verticalProfileDefinition]

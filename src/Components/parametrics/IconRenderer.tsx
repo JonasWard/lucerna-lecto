@@ -21,6 +21,7 @@ import { MethodNames } from 'src/modelDefinition/types/methodSemantics'
 import { AiOutlineBgColors } from 'react-icons/ai'
 import { HiOutlineColorSwatch } from 'react-icons/hi'
 import { BsArrowsVertical, BsFillGrid3X3GapFill, BsGrid3X3, BsLamp } from 'react-icons/bs'
+import { TbArrowCurveLeft, TbCylinder, TbHexagonalPrism, TbHexagons, TbSum, TbTransform } from 'react-icons/tb'
 import { GrPaint } from 'react-icons/gr'
 import { VscDatabase } from 'react-icons/vsc'
 
@@ -220,6 +221,8 @@ export const getIconForKey = (
       return { mainIcon: <BsArrowsVertical size={size} /> }
     case AttributeNames.Pattern:
       return { mainIcon: <MdPattern size={size} /> }
+    case AttributeNames.LocalTransformationOrNot:
+      return { mainIcon: <TbTransform size={size} /> }
     default:
       return { mainIcon: name }
   }
