@@ -1,50 +1,139 @@
-.App {
-  text-align: center;
+.three-scene {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100svw;
+  height: 100svh;
+  transition: all .3s;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.three-scene.active {
+  width: calc(100svw - var(--leftbar-width));
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.parametric-input-top-level {
+  z-index: 10;
+  position: fixed;
+  display: grid;
+  grid-template-columns: var(--icon-size) auto;
+  left: 0;
+  bottom: 0;
+  width: var(--icon-size);
+  height: var(--leftbar-height);
+  transition: all .3s;
+  transform: translateY(0);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.parametric-input-top-level.active {
+  transform: translateY(0);
+  width: var(--leftbar-width);
+}
+
+.parametric-input-icons {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  gap: 4;
+}
+
+.icon-button {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  padding: 10px;
+  background-color: white;
+  transition: all .3s;
+}
+
+.icon-button:hover {
+  background-color: rgb(193, 184, 255);
+}
+
+.icon-button.active {
+  background-color: rgb(42, 21, 180);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.parametric-input-content {
+  background-color: rgba(255, 255, 255, .7);
+  width: 0;
+  transition: all .3s;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.parametric-input-content.active {
+  display: grid;
+  grid-template-rows: 30px calc(100svh - 39px);
+  padding: 8px;
+  width: calc(100% - 16px);
+}
+
+.parametric-input-fields {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 8px 2px;
+}
+
+.parametric-input-icon {
+  padding: 4px;
+  background-color: white;
+  color: darkblue;
+}
+
+.parametric-input-icon .active {
+  background-color: lightblue;
+  color: black;
+}
+
+.parametric-input-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 4px;
+  border-bottom: 1px solid black;
+}
+
+@media (max-width: 650px) {
+  .three-scene {
+    width: 100svw;
+    height: 100svh;
   }
-  to {
-    transform: rotate(360deg);
+
+  .three-scene.active {
+    width: 100svw;
+    height: calc(100svh - var(--bottombar-height) + var(--icon-size));
   }
-}
 
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
+  .parametric-input-top-level {
+    grid-template-rows: var(--icon-size) auto;
+    grid-template-columns: auto;
+    width: var(--bottombar-width);
+    height: var(--bottombar-height);
+    grid-row: 2;
+    transform: translateY(calc(var(--bottombar-height) - var(--icon-size)));
+  }
 
-/* Firefox */
-input[type='number'] {
-  -moz-appearance: textfield;
+  .parametric-input-icons {
+    flex-direction: row;
+    grid-template-rows: 30px calc(var(--bottombar-height) - 30px);
+    width: 100svw;
+  }
+
+  .parametric-input-icons.active {
+    grid-template-rows: 30px calc(var(--bottombar-height) - 30px);
+    width: 100svw;
+  }
+
+  .parametric-input-content {
+    grid-template-rows: 30px calc(var(--bottombar-height) - var(--icon-size) - 39px);
+    transition: all .3s;
+  }
+  
+  .parametric-input-content.active {
+    grid-template-rows: 30px calc(var(--bottombar-height) - var(--icon-size) - 39px);
+    padding: 8px;
+  }
+  
+
+  .parametric-input-content {
+    width: var(--bottombar-width);
+  }
 }
