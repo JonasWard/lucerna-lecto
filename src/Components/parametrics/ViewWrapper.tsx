@@ -3,20 +3,22 @@ import { PopoverWrapper } from './PopoverWrapper';
 import { getIconForKey, IconRenderer } from './IconRenderer';
 import { DisplayType } from './StateDataRenderer';
 import { DrawerWrapper } from './DrawerWrapper';
+import { useData } from 'src/state/state'
 
 interface IViewWrapperProps {
-  children: ReactNode;
-  displayType: DisplayType;
-  name: string;
-  activeName: string;
-  setActiveName: (name: string) => void;
-  disabled: string[];
+  children: ReactNode
+  displayType: DisplayType
+  name: string
+  disabled: string[]
 }
 
-export const ViewWrapper: React.FC<IViewWrapperProps> = ({ children, displayType, name, activeName, setActiveName, disabled }) => {
+export const ViewWrapper: React.FC<IViewWrapperProps> = ({ children, displayType, name, disabled }) => {
+  const activeName = useData((s) => s.activeName)
+  const setActiveName = useData((s) => s.setActiveName)
+
   switch (displayType) {
     case DisplayType.NESTED:
-      return <div style={{ margin: '4px 0' }}>{children}</div>;
+      return <div style={{ margin: '4px 0' }}>{children}</div>
     case DisplayType.POPOVER:
       return (
         <PopoverWrapper
@@ -27,7 +29,7 @@ export const ViewWrapper: React.FC<IViewWrapperProps> = ({ children, displayType
           buttonIcon={<IconRenderer name={name} noName />}
           disabled={disabled.includes(name)}
         />
-      );
+      )
     case DisplayType.DRAWER:
       return (
         <DrawerWrapper
@@ -38,8 +40,8 @@ export const ViewWrapper: React.FC<IViewWrapperProps> = ({ children, displayType
           buttonIcon={<IconRenderer name={name} noName />}
           disabled={disabled.includes(name)}
         />
-      );
+      )
     case DisplayType.HIDDEN:
-      return <></>;
+      return <></>
   }
-};
+}
