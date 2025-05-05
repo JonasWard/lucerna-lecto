@@ -6,25 +6,16 @@ import { EnumSemantics } from 'url-safe-bitpacking/dist/types'
 import { useData } from '../../state/state'
 
 const displayTypeMap = {
-  [AttributeNames.Version]: import.meta.env.DEV
-    ? shouldUseDrawer()
-      ? DisplayType.DRAWER
-      : DisplayType.POPOVER
-    : DisplayType.HIDDEN,
-  [AttributeNames.Viewport]: import.meta.env.DEV
-    ? shouldUseDrawer()
-      ? DisplayType.DRAWER
-      : DisplayType.POPOVER
-    : DisplayType.HIDDEN,
-  [AttributeNames.LampShades]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
-  [AttributeNames.Pattern]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
-  [AttributeNames.Footprint]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
-  [AttributeNames.Heights]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
-  [AttributeNames.Base]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
-  [AttributeNames.Material]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
-  [AttributeNames.VerticalProfile]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
-  [AttributeNames.Visualization]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
-  [AttributeNames.GlobalGeometry]: shouldUseDrawer() ? DisplayType.DRAWER : DisplayType.POPOVER,
+  [AttributeNames.Viewport]: DisplayType.NESTED,
+  [AttributeNames.LampShades]: DisplayType.NESTED,
+  [AttributeNames.Pattern]: DisplayType.NESTED,
+  [AttributeNames.Footprint]: DisplayType.NESTED,
+  [AttributeNames.Heights]: DisplayType.NESTED,
+  [AttributeNames.Base]: DisplayType.NESTED,
+  [AttributeNames.Material]: DisplayType.NESTED,
+  [AttributeNames.VerticalProfile]: DisplayType.NESTED,
+  [AttributeNames.Visualization]: DisplayType.NESTED,
+  [AttributeNames.GlobalGeometry]: DisplayType.NESTED,
 }
 
 type IParametricInputProps = {
