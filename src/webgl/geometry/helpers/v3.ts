@@ -1,5 +1,6 @@
 import { QuadFace } from './face';
 import { TransformationMatrix } from './transformation';
+import { RotationNumbers } from './transformationContentType'
 import { V2 } from './v2';
 
 export interface V3 {
@@ -79,6 +80,12 @@ export class V3 {
     x,
     y: y === undefined ? x : y,
     z: z === undefined ? (y === undefined ? x : y) : z,
+  })
+  public static getRotatedVector = (v: V3, matrix: RotationNumbers) => ({
+    x: v.x * matrix[0] + v.y * matrix[1] + v.z * matrix[2],
+    y: v.x * matrix[3] + v.y * matrix[4] + v.z * matrix[5],
+    z: v.x * matrix[6] + v.y * matrix[7] + v.z * matrix[8],
+  })
   public static getVectorAngle(a: V3, b: V3): number {
     if (V3.getLengthSquared(a) < V3.zeroToleranceSquared || V3.getLengthSquared(b) < V3.zeroToleranceSquared)
       throw new Error('Cannot compute angle of zero-length vector.')
