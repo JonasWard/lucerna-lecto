@@ -31,6 +31,9 @@ type DataStore = {
   undoStack: string[]
   redoStack: string[]
   isWaiting: boolean
+  activeName: string | undefined
+  setActiveName: (activeName: string) => void
+  clearActiveName: () => void
 }
 
 export const useData = create<DataStore>((set) => ({
@@ -45,4 +48,7 @@ export const useData = create<DataStore>((set) => ({
   undoStack: [],
   redoStack: [],
   isWaiting: false,
+  activeName: undefined,
+  setActiveName: (activeName) => set(() => ({ activeName })),
+  clearActiveName: () => set(() => ({ activeName: undefined })),
 }))

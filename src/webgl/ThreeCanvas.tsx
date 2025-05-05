@@ -9,12 +9,7 @@ export const ThreeCanvas: React.FC<{
   canvasRef: LegacyRef<HTMLCanvasElement>
 }> = ({ canvasRef }) => {
   return (
-    <Canvas
-      gl={{ preserveDrawingBuffer: true }}
-      key="threejs-canvas"
-      ref={canvasRef}
-      style={{ width: '100svw', height: '100svh' }}
-    >
+    <Canvas gl={{ preserveDrawingBuffer: true }} key="threejs-canvas" ref={canvasRef}>
       <ThreeCameraControls />
       <ambientLight intensity={Math.PI / 4} />
       <pointLight position={[0, 50, 0]} intensity={Math.PI * 1000} />

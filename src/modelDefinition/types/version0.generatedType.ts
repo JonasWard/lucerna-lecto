@@ -1222,7 +1222,8 @@ export type HeightsIncrementalType = {
 }
 
 export type Version0Type = {
-  ['Viewport']: {
+  [AttributeNames.Version]: { value: number; type: DataType.VERSION; name: AttributeNames.Version }
+  [AttributeNames.Viewport]: {
     ['Orbit Control Target']: {
       ['X']: { value: number; name: 'X'; type: DataType.FLOAT; min: -1; max: 1; precision: 3; significand: 11 }
       ['Y']: { value: number; name: 'Y'; type: DataType.FLOAT; min: -1; max: 1; precision: 3; significand: 11 }
@@ -1253,7 +1254,7 @@ export type Version0Type = {
       significand: 15
     }
   }
-  ['Global Geometry']: {
+  [AttributeNames.GlobalGeometry]: {
     ['subDivisions']: { value: number; name: 'subDivisions'; type: DataType.INT; min: 0; max: 6; bits: 3 }
     ['smoothing']: {
       value: number
@@ -1279,7 +1280,7 @@ export type Version0Type = {
       type: DataType.BOOLEAN
     }
   }
-  ['Lamp Shades']:
+  [AttributeNames.LampShades]:
     | {
         s: { value: 0; name: 'Lamp Shades'; type: DataType.ENUM; max: 3; bits: 2 }
         v: {

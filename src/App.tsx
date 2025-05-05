@@ -16,11 +16,12 @@ import { GiLaserBlast } from 'react-icons/gi'
 import { SiCncf } from 'react-icons/si'
 import { getBumpMesh } from './webgl/geometry/mesh/bumping'
 
-const defaultState = 'BZq-Wb8ZZObBTWJrhCcab6GPiJkyBWaM0Rh4oAAZQADKAAA-eu3Ro'
+const defaultState = 'B4sTX_XNZii74P3DhCcab6GPg_WZArNGaIw8GagAKMp2A1IKviUhPNwgAAAh5dOe8A'
 
 export const App: React.FC = () => {
   const { stateString } = useParams()
   const data = useData((s) => s.data)
+  const activeName = useData((s) => s.activeName)
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -71,8 +72,12 @@ export const App: React.FC = () => {
 
   return (
     <>
-      <ThreeCanvas canvasRef={canvasRef} />
-      <ParametricInput versionEnumSemantics={version0EnumSemantics} />
+      <div>
+        <ParametricInput versionEnumSemantics={version0EnumSemantics} />
+        <div className={`three-scene ${activeName ? 'active' : ''}`}>
+          <ThreeCanvas canvasRef={canvasRef} />
+        </div>
+      </div>
       <Button style={{ position: 'fixed', top: '15px', right: '15px' }} onClick={downloadPNG}>
         <LiaFileDownloadSolid style={{ position: 'absolute', width: 20, height: 20 }} size={16} />
       </Button>
