@@ -2,37 +2,19 @@ import { AttributeNames } from 'src/modelDefinition/enums/attributeNames'
 import { ColorType, LocalTransformType, Version0Type } from 'src/modelDefinition/types/version0.generatedType'
 import { MainMethods } from 'src/modelDefinition/types/methodSemantics'
 import { getSdMethodNameForMethodName, ShaderMethods } from './shaderMethods'
+import { contentForSwapYZ, getRotationMatrixData } from '../helpers/sharedMethods'
+import { RotationNumbers } from '../helpers/transformationContentType'
 
-const SwapYZ = `mat3(
-  1.0, 0.0, 0.0,
-  0.0, 0.0, 1.0,
-  0.0, -1.0, 0.0
-)`
 const getStringRepresentationOfValue = (value: number): string => value.toFixed(3)
 
-const getMat3FromNumbers = (
-  vs: [number, number, number, number, number, number, number, number, number]
-): string => `mat3(
+const getMat3FromNumbers = (vs: RotationNumbers): string => `mat3(
   ${vs.slice(0, 3).map(getStringRepresentationOfValue).join(', ')},
   ${vs.slice(3, 6).map(getStringRepresentationOfValue).join(', ')},
   ${vs.slice(6, 9).map(getStringRepresentationOfValue).join(', ')}
 )`
 
-const getRotationMatrix = (data: LocalTransformType): string => {
-  const aC = Math.cos((data[AttributeNames.Roll].value * Math.PI) / 180)
-  const aS = Math.sin((data[AttributeNames.Roll].value * Math.PI) / 180)
-  const bC = Math.cos((data[AttributeNames.Pitch].value * Math.PI) / 180)
-  const bS = Math.sin((data[AttributeNames.Pitch].value * Math.PI) / 180)
-  const cC = Math.cos((data[AttributeNames.Yaw].value * Math.PI) / 180)
-  const cS = Math.sin((data[AttributeNames.Yaw].value * Math.PI) / 180)
-
-  // prettier-ignore
-  return getMat3FromNumbers([
-    aC * bC, aC * bS * cS - aS * cC, aC * bS * cC + aS * cS,
-    aS * bC, aS * bS * cS - aC * cC, aS * bS * cC - aC * cS,
-    - bS, bC * cS, bC * cC
-  ])
-}
+const getRotationMatrix = (data: LocalTransformType): string => getMat3FromNumbers(getRotationMatrixData(data))
+const getSwapYZMatrix = (): string => getMat3FromNumbers(contentForSwapYZ)
 
 const getTranslationVector = (data: LocalTransformType): string =>
   `vec3(${getStringRepresentationOfValue(data[AttributeNames.X].value)},${getStringRepresentationOfValue(
@@ -51,7 +33,7 @@ const getTranslationData = (data: Version0Type[AttributeNames.Pattern][Attribute
 
 /**
  * Method that constructs the content of the distance method
- * @param data - `Version0Type[AttributeNames.MainMethods]['v']`
+ * @param data - `Version0Type[AttributeNames.Pattern][AttributeNames.MainMethods]['v']`
  */
 export const getShaderDistanceMethod = (
   data: Version0Type[AttributeNames.Pattern][AttributeNames.MainMethods]['v']
@@ -127,6 +109,6 @@ void main() {
   vec3 transformed = position + normal * max(0.0, min(mD,sdMain(position * ${getScale(
     data
   )}) * ${getStringRepresentationOfValue(data[AttributeNames.GlobalGeometry].expression.value)}));
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed * ${SwapYZ}, 1.0);
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed * ${getSwapYZMatrix()}, 1.0);
   p = position;
 }`
