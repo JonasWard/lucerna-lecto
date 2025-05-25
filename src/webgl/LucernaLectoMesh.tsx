@@ -4,7 +4,7 @@ import { getMesh } from './geometry/factory'
 import { getVertexDataForMesh } from './geometry/mesh/vertexData'
 import { useData } from 'src/state/state'
 import { Mesh, BufferGeometry, NormalBufferAttributes, ShaderMaterial, Object3DEventMap, BufferAttribute } from 'three'
-import { getFragmentShader, getVertexShader } from './geometry/shader/shaderComposer'
+import { getFragmentShader, getVertexShader } from './geometry/sdMathematics/glsl/shaderComposer'
 import { AttributeNames } from 'src/modelDefinition/enums/attributeNames'
 
 export const LucernaLectoMesh: React.FC = () => {
