@@ -57,7 +57,9 @@ export const getMesh = (data: Version0Type): Mesh => {
       data[AttributeNames.LampShades].v['max radius'].value,
       data[AttributeNames.LampShades].v['edge radius'].value,
       5 / 2 ** data[AttributeNames.GlobalGeometry].subDivisions.value,
-      data[AttributeNames.GlobalGeometry].expression.value
+      data[AttributeNames.GlobalGeometry]['max-distance']?.v?.['max-distance overwrite']?.value
+        ? data[AttributeNames.GlobalGeometry]['max-distance']?.v?.['max-distance overwrite']?.value
+        : data[AttributeNames.GlobalGeometry].expression.value
     )
   }
   if (data[AttributeNames.LampShades].s.value === 1) {

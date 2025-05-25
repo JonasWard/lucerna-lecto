@@ -1,16 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Version0Type } from '../modelDefinition/types/version0.generatedType'
-import { getMaterialColor, getMesh, isDoubleSide, isWireframe } from './geometry/factory'
+import { getMesh, isDoubleSide, isWireframe } from './geometry/factory'
 import { VertexNormalsHelper } from 'three/addons/helpers/VertexNormalsHelper.js'
-import {
-  BufferAttribute,
-  BufferGeometry,
-  InstancedMesh,
-  Mesh,
-  MeshNormalMaterial,
-  MeshPhongMaterial,
-  Object3D,
-} from 'three'
+import { BufferAttribute, BufferGeometry, InstancedMesh, Mesh, MeshNormalMaterial, Object3D } from 'three'
 import { AttributeNames } from 'src/modelDefinition/enums/attributeNames'
 import { getVertexDataForMesh } from './geometry/mesh/vertexData'
 import { getVertexInstancedMeshForMesh } from './geometry/baseMeshes/helperRenders'
@@ -20,7 +12,7 @@ import { getBumpMesh } from './geometry/mesh/bumping'
 const getGeometrySettings = (data: Version0Type) =>
   JSON.stringify([
     data[AttributeNames.LampShades],
-    data[AttributeNames.MainMethods],
+    data[AttributeNames.Pattern],
     data[AttributeNames.GlobalGeometry],
     data[AttributeNames.VerticalProfile],
     data[AttributeNames.Visualization].Normals,
@@ -43,6 +35,7 @@ export const ThreeMesh = () => {
       const currentGeometrySettings = getGeometrySettings(data)
       if (currentGeometrySettings !== geometrySettings) {
         const rawMesh = getMesh(data)
+
         const bumpedMesh = getBumpMesh(rawMesh, data)
         if (data[AttributeNames.Visualization].Vertices.value) {
           meshRef.current.geometry.dispose()
@@ -50,16 +43,11 @@ export const ThreeMesh = () => {
         } else {
           if (vertexInstancedMesh.current) vertexInstancedMesh.current.dispose()
           const vertexData = getVertexDataForMesh(bumpedMesh)
-          meshRef.current.material = data[AttributeNames.Material][AttributeNames.NormalMaterial].s.value
-            ? new MeshNormalMaterial({
-                side: isDoubleSide(data) ? 2 : 0,
-                wireframe: isWireframe(data),
-              })
-            : new MeshPhongMaterial({
-                color: getMaterialColor(data[AttributeNames.Material][AttributeNames.NormalMaterial].v.color),
-                side: isDoubleSide(data) ? 2 : 0,
-                wireframe: isWireframe(data),
-              })
+          meshRef.current.material = new MeshNormalMaterial({
+            side: 2,
+            wireframe: isWireframe(data),
+          })
+
           // meshRef.current.material = new MeshPhongMaterial({ color, side: isDoubleSide(data) ? 2 : 0, wireframe: isWireframe(data) });
           const bufferGeometry = new BufferGeometry()
           bufferGeometry.setIndex(vertexData.indices)
@@ -103,16 +91,10 @@ export const ThreeMesh = () => {
       // next checking the material settings
       const currentMaterialSettings = getMaterialSettings(data)
       if (currentMaterialSettings !== materialSettings) {
-        meshRef.current.material = data[AttributeNames.Material][AttributeNames.NormalMaterial].s.value
-          ? new MeshNormalMaterial({
-              side: isDoubleSide(data) ? 2 : 0,
-              wireframe: isWireframe(data),
-            })
-          : new MeshPhongMaterial({
-              color: getMaterialColor(data[AttributeNames.Material][AttributeNames.NormalMaterial].v.color),
-              side: isDoubleSide(data) ? 2 : 0,
-              wireframe: isWireframe(data),
-            })
+        meshRef.current.material = new MeshNormalMaterial({
+          side: isDoubleSide(data) ? 2 : 0,
+          wireframe: isWireframe(data),
+        })
 
         setMaterialSettings(currentMaterialSettings)
       }
@@ -123,10 +105,5 @@ export const ThreeMesh = () => {
     }
   }, [data])
 
-  return (
-    <>
-      <mesh ref={meshRef} />
-      {/* <instancedMesh ref={vertexInstancedMesh} /> */}
-    </>
-  )
+  return <mesh ref={meshRef} />
 }

@@ -15,8 +15,9 @@ import { getMesh } from './webgl/geometry/factory'
 import { GiLaserBlast } from 'react-icons/gi'
 import { SiCncf } from 'react-icons/si'
 import { getBumpMesh } from './webgl/geometry/mesh/bumping'
+import { AttributeNames } from './modelDefinition/enums/attributeNames'
 
-const defaultState = 'B4sTX_XNZii74P3DhCcab6GPg_WZArNGaIw8GagAKMp2A1IKviUhPNwgAAAh5dOe8A'
+const defaultState = 'B80M3xVxWEarzQ-DhCcar6TXUKETJkCs0ZojDxP6AAIAAA-enEE4gqO6M3ykb3f_uuKA'
 
 export const App: React.FC = () => {
   const { stateString } = useParams()
@@ -75,7 +76,11 @@ export const App: React.FC = () => {
       <div>
         <ParametricInput versionEnumSemantics={version0EnumSemantics} />
         <div className={`three-scene ${activeName ? 'active' : ''}`}>
-          <ThreeCanvas canvasRef={canvasRef} />
+          <ThreeCanvas
+            canvasRef={canvasRef}
+            shaderViz={(data as unknown as Version0Type)[AttributeNames.GlobalGeometry]['shader-based'].value}
+            meshViz={(data as unknown as Version0Type)[AttributeNames.GlobalGeometry]['mesh-based'].value}
+          />
         </div>
       </div>
       <Button style={{ position: 'fixed', top: '15px', right: '15px' }} onClick={downloadPNG}>

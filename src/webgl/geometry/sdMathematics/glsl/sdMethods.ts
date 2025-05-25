@@ -1,10 +1,9 @@
 import { MainMethodType, MethodNames } from 'src/modelDefinition/types/methodSemantics'
 
 export const getSdMethodNameForMethodName = (name: MainMethodType): string => `sd${name}`
-export const getMethodWrapper = (
-  name: MainMethodType,
-  content: string
-): string => `float ${getSdMethodNameForMethodName(name)}(vec3 v, float s) {
+const getMethodWrapper = (name: MainMethodType, content: string): string => `float ${getSdMethodNameForMethodName(
+  name
+)}(vec3 v, float s) {
   ${content}
   return d;
 }`

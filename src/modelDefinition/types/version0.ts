@@ -125,11 +125,19 @@ const verticalProfileDefinition: NonEmptyValidEntryArrayType = [
   DataEntryFactory.createFloat(0, 0, 1, 2, 'edgeSmoothing'),
 ]
 
+const optionalMaxDistanceOverwrite: OptionalEntryDataType = [
+  false,
+  [],
+  [DataEntryFactory.createFloat(2, 1, 20, 1, 'max-distance overwrite')],
+]
+
 const globalGeometry: SingleLevelContentType[] = [
   DataEntryFactory.createInt(0, 0, 6, 'subDivisions'),
   DataEntryFactory.createFloat(0.5, 0, 1, 3, 'smoothing'),
   DataEntryFactory.createFloat(0.1, 0.01, 25, 2, 'expression'),
   DataEntryFactory.createBoolean(true, 'shader-based'),
+  DataEntryFactory.createBoolean(false, 'mesh-based'),
+  ['max-distance', optionalMaxDistanceOverwrite],
 ]
 
 const hasverticalProfileDefinition: OptionalEntryDataType = [false, [], verticalProfileDefinition]
