@@ -16,7 +16,7 @@ import { GiLaserBlast } from 'react-icons/gi'
 import { SiCncf } from 'react-icons/si'
 import { getBumpMesh } from './webgl/geometry/mesh/bumping'
 
-const defaultState = 'B4sTX_XNZii74P3DhCcab6GPg_WZArNGaIw8GagAKMp2A1IKviUhPNwgAAAh5dOe8A'
+const defaultState = 'B4sTX_XNZii74P3DhCcab6GPhEyZArNGaIw8GagAKMp2A1IKviUhPNwgAAAh5dOe8A'
 
 export const App: React.FC = () => {
   const { stateString } = useParams()
