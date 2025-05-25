@@ -17,7 +17,7 @@ import { SiCncf } from 'react-icons/si'
 import { getBumpMesh } from './webgl/geometry/mesh/bumping'
 import { AttributeNames } from './modelDefinition/enums/attributeNames'
 
-const defaultState = 'B4sTX_XNZii74P3DhCcab6GPhEyZArNGaIw8GagAKMp2A1IKviUhPNwgAAAh5dOe8A'
+const defaultState = 'B80M3xVxWEarzQ-DhCcar6TXUKETJkCs0ZojDxP6AAIAAA-enEE4gqO6M3ykb3f_uuKA'
 
 export const App: React.FC = () => {
   const { stateString } = useParams()
