@@ -1279,6 +1279,11 @@ export type Version0Type = {
       name: 'shader-based'
       type: DataType.BOOLEAN
     }
+    ['mesh-based']: {
+      value: boolean
+      name: 'shader-based'
+      type: DataType.BOOLEAN
+    }
     ['max-distance']: {
       s: {
         value: boolean
