@@ -1279,6 +1279,20 @@ export type Version0Type = {
       name: 'shader-based'
       type: DataType.BOOLEAN
     }
+    ['max-distance']: {
+      s: {
+        value: boolean
+        name: 'max-distance'
+        type: DataType.BOOLEAN
+      }
+      v?: {
+        ['max-distance overwrite']?: {
+          value?: number
+          name: 'max-distance'
+          type: DataType.FLOAT
+        }
+      }
+    }
   }
   [AttributeNames.LampShades]:
     | {
