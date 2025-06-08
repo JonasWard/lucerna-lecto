@@ -31,8 +31,14 @@ const mainMethodVersionStack: ArrayEntryDataType = [
   ],
 ]
 
+const remapRange: SingleLevelContentType = [
+  AttributeNames.RemapRange,
+  [DataEntryFactory.createFloat(0.0, -10, 10, 2, 'from'), DataEntryFactory.createFloat(1.0, -10, 10, 2, 'to')],
+]
+
 const patternSettings: SingleLevelContentType[] = [
   DataEntryFactory.createFloat(2.5, 0.1, 10, 2, AttributeNames.ExpressionScale),
+  remapRange,
   [AttributeNames.MainMethods, mainMethodVersionStack],
 ]
 
@@ -67,7 +73,7 @@ const materialDefinition: SingleLevelContentType[] = [
       DataEntryFactory.createInt(163, 0, 255, AttributeNames.B),
     ],
   ],
-  DataEntryFactory.createFloat(0.05, 0.01, 0.5, 2, 'color-expression'),
+  DataEntryFactory.createFloat(0.5, 0.01, 0.5, 2, 'color-expression'),
 ]
 
 const visualizationDefintion: SingleLevelContentType[] = [
@@ -134,7 +140,7 @@ const optionalMaxDistanceOverwrite: OptionalEntryDataType = [
 const globalGeometry: SingleLevelContentType[] = [
   DataEntryFactory.createInt(0, 0, 6, 'subDivisions'),
   DataEntryFactory.createFloat(0.5, 0, 1, 3, 'smoothing'),
-  DataEntryFactory.createFloat(0.1, 0.01, 25, 2, 'expression'),
+  DataEntryFactory.createFloat(1, 0.01, 25, 2, 'expression'),
   DataEntryFactory.createBoolean(true, 'shader-based'),
   DataEntryFactory.createBoolean(false, 'mesh-based'),
   ['max-distance', optionalMaxDistanceOverwrite],

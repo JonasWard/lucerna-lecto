@@ -1224,29 +1224,29 @@ export type HeightsIncrementalType = {
 export type Version0Type = {
   [AttributeNames.Version]: { value: number; type: DataType.VERSION; name: AttributeNames.Version }
   [AttributeNames.Viewport]: {
-    ['Orbit Control Target']: {
+    [AttributeNames.OrbitControlTarget]: {
       ['X']: { value: number; name: 'X'; type: DataType.FLOAT; min: -1; max: 1; precision: 3; significand: 11 }
       ['Y']: { value: number; name: 'Y'; type: DataType.FLOAT; min: -1; max: 1; precision: 3; significand: 11 }
       ['Z']: { value: number; name: 'Z'; type: DataType.FLOAT; min: -1; max: 1; precision: 3; significand: 11 }
       ['W']: { value: number; name: 'W'; type: DataType.FLOAT; min: -1; max: 1; precision: 3; significand: 11 }
     }
-    ['Camera Position']: {
+    [AttributeNames.CameraPosition]: {
       ['X']: { value: number; name: 'X'; type: DataType.FLOAT; min: -1000; max: 1000; precision: 1; significand: 15 }
       ['Y']: { value: number; name: 'Y'; type: DataType.FLOAT; min: -1000; max: 1000; precision: 1; significand: 15 }
       ['Z']: { value: number; name: 'Z'; type: DataType.FLOAT; min: -1000; max: 1000; precision: 1; significand: 15 }
     }
-    ['Camera Angle']: {
+    [AttributeNames.CameraAngle]: {
       value: number
-      name: 'Camera Angle'
+      name: AttributeNames.CameraAngle
       type: DataType.FLOAT
       min: -180
       max: 180
       precision: 1
       significand: 12
     }
-    ['Radius']: {
+    [AttributeNames.Radius]: {
       value: number
-      name: 'Radius'
+      name: AttributeNames.Radius
       type: DataType.FLOAT
       min: -1000
       max: 1000
@@ -1301,7 +1301,7 @@ export type Version0Type = {
   }
   [AttributeNames.LampShades]:
     | {
-        s: { value: 0; name: 'Lamp Shades'; type: DataType.ENUM; max: 3; bits: 2 }
+        s: { value: 0; name: AttributeNames.LampShades; type: DataType.ENUM; max: 3; bits: 2 }
         v: {
           ['h']: { value: number; name: 'h'; type: DataType.FLOAT; min: 40; max: 240; precision: 1; significand: 11 }
           ['HasBase']:
@@ -1331,7 +1331,7 @@ export type Version0Type = {
         }
       }
     | {
-        s: { value: 1; name: 'Lamp Shades'; type: DataType.ENUM; max: 3; bits: 2 }
+        s: { value: 1; name: AttributeNames.LampShades; type: DataType.ENUM; max: 3; bits: 2 }
         v: {
           ['h']: { value: number; name: 'h'; type: DataType.FLOAT; min: 50; max: 240; precision: 1; significand: 11 }
           ['inset']: { value: number; name: 'inset'; type: DataType.INT; min: 1; max: 10; bits: 4 }
@@ -1342,7 +1342,7 @@ export type Version0Type = {
         }
       }
     | {
-        s: { value: 2; name: 'Lamp Shades'; type: DataType.ENUM; max: 3; bits: 2 }
+        s: { value: 2; name: AttributeNames.LampShades; type: DataType.ENUM; max: 3; bits: 2 }
         v: {
           ['h']: { value: number; name: 'h'; type: DataType.FLOAT; min: 0; max: 1; precision: 2; significand: 7 }
           ['inset']: { value: number; name: 'inset'; type: DataType.INT; min: 1; max: 10; bits: 4 }
@@ -1352,7 +1352,7 @@ export type Version0Type = {
         }
       }
     | {
-        s: { value: 3; name: 'Lamp Shades'; type: DataType.ENUM; max: 3; bits: 2 }
+        s: { value: 3; name: AttributeNames.LampShades; type: DataType.ENUM; max: 3; bits: 2 }
         v: {
           ['h']: { value: number; name: 'h'; type: DataType.FLOAT; min: 50; max: 240; precision: 1; significand: 11 }
           ['h-base']: {
@@ -1388,6 +1388,10 @@ export type Version0Type = {
       }
   [AttributeNames.Pattern]: {
     [AttributeNames.ExpressionScale]: { value: number; name: AttributeNames.ExpressionScale; type: DataType.FLOAT }
+    [AttributeNames.RemapRange]: {
+      from: { value: number; name: 'from'; type: DataType.FLOAT }
+      to: { value: number; name: 'to'; type: DataType.FLOAT }
+    }
     [AttributeNames.MainMethods]: {
       s: { value: 1 | 2 | 3; name: AttributeNames.MainMethods; type: DataType.INT; min: 1; max: 3; bits: 2 }
       v: {
@@ -1418,13 +1422,13 @@ export type Version0Type = {
       }[]
     }
   }
-  ['Vertical Profile']:
+  [AttributeNames.VerticalProfile]:
     | {
-        s: { value: true; name: 'Vertical Profile'; type: DataType.BOOLEAN }
+        s: { value: true; name: AttributeNames.VerticalProfile; type: DataType.BOOLEAN }
         v: {}
       }
     | {
-        s: { value: false; name: 'Vertical Profile'; type: DataType.BOOLEAN }
+        s: { value: false; name: AttributeNames.VerticalProfile; type: DataType.BOOLEAN }
         v: {
           ['reverse']: { value: boolean; name: 'reverse'; type: DataType.BOOLEAN }
           ['edgeSmoothing']: {
@@ -1438,7 +1442,7 @@ export type Version0Type = {
           }
         }
       }
-  ['Material']: {
+  [AttributeNames.Material]: {
     ['color']: ColorType
     ['color-expression']: {
       value: number
@@ -1446,10 +1450,10 @@ export type Version0Type = {
       type: DataType.FLOAT
     }
   }
-  ['Visualization']: {
-    ['Wireframe']: { value: boolean; name: 'Wireframe'; type: DataType.BOOLEAN }
-    ['Double Sided']: { value: boolean; name: 'Double Sided'; type: DataType.BOOLEAN }
-    ['Normals']: { value: boolean; name: 'Normals'; type: DataType.BOOLEAN }
-    ['Vertices']: { value: boolean; name: 'Vertices'; type: DataType.BOOLEAN }
+  [AttributeNames.Visualization]: {
+    [AttributeNames.Wireframe]: { value: boolean; name: AttributeNames.Wireframe; type: DataType.BOOLEAN }
+    [AttributeNames.DoubleSided]: { value: boolean; name: AttributeNames.DoubleSided; type: DataType.BOOLEAN }
+    [AttributeNames.Normals]: { value: boolean; name: AttributeNames.Normals; type: DataType.BOOLEAN }
+    [AttributeNames.Vertices]: { value: boolean; name: AttributeNames.Vertices; type: DataType.BOOLEAN }
   }
 }

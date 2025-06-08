@@ -100,5 +100,6 @@ export enum AttributeNames {
   Vertices = 'Vertices',
   Pattern = 'Pattern',
   ExpressionScale = 'Expression Scale',
+  RemapRange = 'Remap Range',
   LocalTransformationOrNot = 'LocalTransformationOrNot',
 }
