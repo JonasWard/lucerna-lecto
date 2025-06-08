@@ -1265,15 +1265,6 @@ export type Version0Type = {
       precision: 3
       significand: 10
     }
-    ['expression']: {
-      value: number
-      name: 'expression'
-      type: DataType.FLOAT
-      min: 0.025
-      max: 5
-      precision: 3
-      significand: 13
-    }
     ['shader-based']: {
       value: boolean
       name: 'shader-based'
@@ -1283,20 +1274,6 @@ export type Version0Type = {
       value: boolean
       name: 'shader-based'
       type: DataType.BOOLEAN
-    }
-    ['max-distance']: {
-      s: {
-        value: boolean
-        name: 'max-distance'
-        type: DataType.BOOLEAN
-      }
-      v?: {
-        ['max-distance overwrite']?: {
-          value?: number
-          name: 'max-distance'
-          type: DataType.FLOAT
-        }
-      }
     }
   }
   [AttributeNames.LampShades]:
@@ -1391,6 +1368,29 @@ export type Version0Type = {
     [AttributeNames.RemapRange]: {
       from: { value: number; name: 'from'; type: DataType.FLOAT }
       to: { value: number; name: 'to'; type: DataType.FLOAT }
+    }
+    ['max-distance']: {
+      s: {
+        value: boolean
+        name: 'max-distance'
+        type: DataType.BOOLEAN
+      }
+      v?: {
+        ['max-distance overwrite']?: {
+          value?: number
+          name: 'max-distance'
+          type: DataType.FLOAT
+        }
+      }
+    }
+    ['expression']: {
+      value: number
+      name: 'expression'
+      type: DataType.FLOAT
+      min: 0.025
+      max: 5
+      precision: 3
+      significand: 13
     }
     [AttributeNames.MainMethods]: {
       s: { value: 1 | 2 | 3; name: AttributeNames.MainMethods; type: DataType.INT; min: 1; max: 3; bits: 2 }

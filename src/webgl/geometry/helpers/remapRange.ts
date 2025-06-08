@@ -17,6 +17,6 @@ export const getOffsetAndMultiplierForRemapFromUnitToArbitrary = (
 })
 
 export const getMaxExpression = (data: Version0Type) =>
-  data[AttributeNames.GlobalGeometry]['max-distance']?.v?.['max-distance overwrite']?.value
-    ? data[AttributeNames.GlobalGeometry]['max-distance']?.v?.['max-distance overwrite']?.value
-    : data[AttributeNames.GlobalGeometry].expression.value
+  data[AttributeNames.Pattern]['max-distance']?.v?.['max-distance overwrite']?.value
+    ? data[AttributeNames.Pattern]['max-distance']?.v?.['max-distance overwrite']?.value
+    : data[AttributeNames.Pattern].expression.value
