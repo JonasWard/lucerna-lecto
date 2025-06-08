@@ -46,7 +46,9 @@ const patternSettings: SingleLevelContentType[] = [
   DataEntryFactory.createFloat(2.5, 0.1, 10, 2, AttributeNames.ExpressionScale),
   remapRange,
   DataEntryFactory.createFloat(1, 0.01, 25, 2, 'expression'),
+  DataEntryFactory.createBoolean(false, 'no-smoothing'),
   ['max-distance', optionalMaxDistanceOverwrite],
+
   [AttributeNames.MainMethods, mainMethodVersionStack],
 ]
 

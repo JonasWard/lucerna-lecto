@@ -100,7 +100,7 @@ export const getFragmentShader = (data: Version0Type): string => `const vec3 col
 ${getDistanceContentString(data[AttributeNames.Pattern])}
 
 void main() {
-  if (mD == 0.0) {
+  if (p.z == ${getStringRepresentationOfValue(data[AttributeNames.LampShades].v.h.value)} || mD == 0.0) {
     gl_FragColor = vec4(color, 1.0);
     return;
   }

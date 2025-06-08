@@ -9,14 +9,16 @@ const getArcXForYOfArcSegment = (y: number) => (1 - (1 - y) ** 2) ** 0.5
 
 /**
  * Helper method for getting the arc generation data and method.
- * @param maxExpression - maximum width of the arc segment
+ * @param maxExpression - maximum width of the arc segment (if undefined dYMin will be -1)
  * @param maxAngle - angle of the tangent at the top of the arc segment
  * @returns \{ 
  *  dYMin: `number` - distance from max height from which the arching starts,
  *  getDMax: `(dY: number) => number` - method to get maximum distance for given vertical distance to the end of the arc 
  * \}
  */
-export const getArcData = (maxExpression: number, maxAngle: number = DEFAULT_MAX_ANGLE) => {
+export const getArcData = (maxExpression: number | undefined, maxAngle: number = DEFAULT_MAX_ANGLE) => {
+  if (!maxExpression) return { dYMin: -1, getDMax: () => 1 }
+
   const localAngle = 90 - Math.max(0, Math.min(maxAngle, 90))
 
   const c = Math.cos((localAngle * Math.PI) / 180)
