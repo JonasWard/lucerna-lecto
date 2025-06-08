@@ -1221,6 +1221,98 @@ export type HeightsIncrementalType = {
   }
 }
 
+export type CubeShadeType = {
+  s: { value: 0; name: AttributeNames.LampShades; type: DataType.ENUM; max: 3; bits: 2 }
+  v: {
+    ['h']: { value: number; name: 'h'; type: DataType.FLOAT; min: 40; max: 240; precision: 1; significand: 11 }
+    ['Has Base']:
+      | {
+          s: { value: true; name: 'Has Base'; type: DataType.BOOLEAN }
+          v: {}
+        }
+      | {
+          s: { value: false; name: 'Has Base'; type: DataType.BOOLEAN }
+          v: {
+            ['inset']: { value: number; name: 'inset'; type: DataType.INT; min: 5; max: 50; bits: 6 }
+            ['h-base']: { value: number; name: 'h-base'; type: DataType.INT; min: 5; max: 50; bits: 6 }
+            ['baseAngle']: { value: number; name: 'baseAngle'; type: DataType.INT; min: 25; max: 90; bits: 6 }
+          }
+        }
+    ['w']: { value: number; name: 'w'; type: DataType.FLOAT; min: 30; max: 150; precision: 1; significand: 11 }
+    ['d']: { value: number; name: 'd'; type: DataType.FLOAT; min: 30; max: 150; precision: 1; significand: 11 }
+    ['max radius']: { value: number; name: 'max radius'; type: DataType.FLOAT }
+    ['edge radius']: { value: number; name: 'edge radius'; type: DataType.FLOAT }
+    ['edgeSmoothing']: {
+      value: number
+      name: 'edgeSmoothing'
+      type: DataType.FLOAT
+      min: 0
+      max: 1
+      precision: 2
+      significand: 7
+    }
+  }
+}
+
+export type SphereShadeType = {
+  s: { value: 1; name: AttributeNames.LampShades; type: DataType.ENUM; max: 3; bits: 2 }
+  v: {
+    ['h']: { value: number; name: 'h'; type: DataType.FLOAT; min: 50; max: 240; precision: 1; significand: 11 }
+    ['inset']: { value: number; name: 'inset'; type: DataType.INT; min: 1; max: 10; bits: 4 }
+    ['h-base']: { value: number; name: 'h-base'; type: DataType.INT; min: 1; max: 32; bits: 5 }
+    ['r0']: { value: number; name: 'r0'; type: DataType.FLOAT; min: 10; max: 150; precision: 1; significand: 11 }
+    ['r1']: { value: number; name: 'r1'; type: DataType.FLOAT; min: 10; max: 150; precision: 1; significand: 11 }
+    ['r2']: { value: number; name: 'r2'; type: DataType.FLOAT; min: 10; max: 150; precision: 1; significand: 11 }
+  }
+}
+
+export type HangingShadeType = {
+  s: { value: 2; name: AttributeNames.LampShades; type: DataType.ENUM; max: 3; bits: 2 }
+  v: {
+    ['h']: { value: number; name: 'h'; type: DataType.FLOAT; min: 0; max: 1; precision: 2; significand: 7 }
+    ['inset']: { value: number; name: 'inset'; type: DataType.INT; min: 1; max: 10; bits: 4 }
+    ['h-base']: { value: number; name: 'h-base'; type: DataType.INT; min: 1; max: 32; bits: 5 }
+    ['w']: { value: number; name: 'w'; type: DataType.FLOAT; min: 30; max: 150; precision: 1; significand: 11 }
+    ['d']: { value: number; name: 'd'; type: DataType.FLOAT; min: 30; max: 150; precision: 1; significand: 11 }
+  }
+}
+
+export type ChurchShadeType = {
+  s: { value: 3; name: AttributeNames.LampShades; type: DataType.ENUM; max: 3; bits: 2 }
+  v: {
+    ['h']: { value: number; name: 'h'; type: DataType.FLOAT; min: 50; max: 240; precision: 1; significand: 11 }
+    ['h-base']: {
+      value: number
+      name: 'h-base'
+      type: DataType.FLOAT
+      min: 0
+      max: 180
+      precision: 1
+      significand: 11
+    }
+    ['sides']: { value: number; name: 'sides'; type: DataType.INT; min: 3; max: 10; bits: 3 }
+    ['alcove-percentage']: {
+      value: number
+      name: 'alcove-percentage'
+      type: DataType.FLOAT
+      min: -1
+      max: 1
+      precision: 3
+      significand: 11
+    }
+    ['alcove-expression']: {
+      value: number
+      name: 'alcove-expression'
+      type: DataType.FLOAT
+      min: 0
+      max: 2
+      precision: 2
+      significand: 8
+    }
+    ['w']: { value: number; name: 'w'; type: DataType.FLOAT; min: 30; max: 150; precision: 1; significand: 11 }
+  }
+}
+
 export type Version0Type = {
   [AttributeNames.Version]: { value: number; type: DataType.VERSION; name: AttributeNames.Version }
   [AttributeNames.Viewport]: {
@@ -1276,93 +1368,7 @@ export type Version0Type = {
       type: DataType.BOOLEAN
     }
   }
-  [AttributeNames.LampShades]:
-    | {
-        s: { value: 0; name: AttributeNames.LampShades; type: DataType.ENUM; max: 3; bits: 2 }
-        v: {
-          ['h']: { value: number; name: 'h'; type: DataType.FLOAT; min: 40; max: 240; precision: 1; significand: 11 }
-          ['HasBase']:
-            | {
-                s: { value: true; name: 'HasBase'; type: DataType.BOOLEAN }
-                v: {}
-              }
-            | {
-                s: { value: false; name: 'HasBase'; type: DataType.BOOLEAN }
-                v: {
-                  ['inset']: { value: number; name: 'inset'; type: DataType.INT; min: 5; max: 50; bits: 6 }
-                  ['h-base']: { value: number; name: 'h-base'; type: DataType.INT; min: 5; max: 50; bits: 6 }
-                  ['baseAngle']: { value: number; name: 'baseAngle'; type: DataType.INT; min: 25; max: 90; bits: 6 }
-                }
-              }
-          ['w']: { value: number; name: 'w'; type: DataType.FLOAT; min: 30; max: 150; precision: 1; significand: 11 }
-          ['d']: { value: number; name: 'd'; type: DataType.FLOAT; min: 30; max: 150; precision: 1; significand: 11 }
-          ['edgeSmoothing']: {
-            value: number
-            name: 'edgeSmoothing'
-            type: DataType.FLOAT
-            min: 0
-            max: 1
-            precision: 2
-            significand: 7
-          }
-        }
-      }
-    | {
-        s: { value: 1; name: AttributeNames.LampShades; type: DataType.ENUM; max: 3; bits: 2 }
-        v: {
-          ['h']: { value: number; name: 'h'; type: DataType.FLOAT; min: 50; max: 240; precision: 1; significand: 11 }
-          ['inset']: { value: number; name: 'inset'; type: DataType.INT; min: 1; max: 10; bits: 4 }
-          ['h-base']: { value: number; name: 'h-base'; type: DataType.INT; min: 1; max: 32; bits: 5 }
-          ['r0']: { value: number; name: 'r0'; type: DataType.FLOAT; min: 10; max: 150; precision: 1; significand: 11 }
-          ['r1']: { value: number; name: 'r1'; type: DataType.FLOAT; min: 10; max: 150; precision: 1; significand: 11 }
-          ['r2']: { value: number; name: 'r2'; type: DataType.FLOAT; min: 10; max: 150; precision: 1; significand: 11 }
-        }
-      }
-    | {
-        s: { value: 2; name: AttributeNames.LampShades; type: DataType.ENUM; max: 3; bits: 2 }
-        v: {
-          ['h']: { value: number; name: 'h'; type: DataType.FLOAT; min: 0; max: 1; precision: 2; significand: 7 }
-          ['inset']: { value: number; name: 'inset'; type: DataType.INT; min: 1; max: 10; bits: 4 }
-          ['h-base']: { value: number; name: 'h-base'; type: DataType.INT; min: 1; max: 32; bits: 5 }
-          ['w']: { value: number; name: 'w'; type: DataType.FLOAT; min: 30; max: 150; precision: 1; significand: 11 }
-          ['d']: { value: number; name: 'd'; type: DataType.FLOAT; min: 30; max: 150; precision: 1; significand: 11 }
-        }
-      }
-    | {
-        s: { value: 3; name: AttributeNames.LampShades; type: DataType.ENUM; max: 3; bits: 2 }
-        v: {
-          ['h']: { value: number; name: 'h'; type: DataType.FLOAT; min: 50; max: 240; precision: 1; significand: 11 }
-          ['h-base']: {
-            value: number
-            name: 'h-base'
-            type: DataType.FLOAT
-            min: 0
-            max: 180
-            precision: 1
-            significand: 11
-          }
-          ['sides']: { value: number; name: 'sides'; type: DataType.INT; min: 3; max: 10; bits: 3 }
-          ['alcove-percentage']: {
-            value: number
-            name: 'alcove-percentage'
-            type: DataType.FLOAT
-            min: -1
-            max: 1
-            precision: 3
-            significand: 11
-          }
-          ['alcove-expression']: {
-            value: number
-            name: 'alcove-expression'
-            type: DataType.FLOAT
-            min: 0
-            max: 2
-            precision: 2
-            significand: 8
-          }
-          ['w']: { value: number; name: 'w'; type: DataType.FLOAT; min: 30; max: 150; precision: 1; significand: 11 }
-        }
-      }
+  [AttributeNames.LampShades]: CubeShadeType | SphereShadeType | HangingShadeType | ChurchShadeType
   [AttributeNames.Pattern]: {
     [AttributeNames.ExpressionScale]: { value: number; name: AttributeNames.ExpressionScale; type: DataType.FLOAT }
     [AttributeNames.RemapRange]: {
@@ -1382,6 +1388,11 @@ export type Version0Type = {
           type: DataType.FLOAT
         }
       }
+    }
+    ['no-smoothing']: {
+      value: boolean
+      name: 'no-smoothing'
+      type: DataType.BOOLEAN
     }
     ['expression']: {
       value: number

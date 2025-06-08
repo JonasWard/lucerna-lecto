@@ -1,5 +1,12 @@
 import { Color } from 'three'
-import { ColorType, Version0Type } from '../../modelDefinition/types/version0.generatedType'
+import {
+  ChurchShadeType,
+  ColorType,
+  CubeShadeType,
+  HangingShadeType,
+  SphereShadeType,
+  Version0Type,
+} from '../../modelDefinition/types/version0.generatedType'
 import { VertexData } from './helpers/vertexData'
 import { AttributeNames } from '../../modelDefinition/enums/attributeNames'
 import { getCubeMesh } from './baseMeshes/cubeMesh'
@@ -45,56 +52,59 @@ export const getMesh = (data: Version0Type): Mesh => {
   }
 
   if (data[AttributeNames.LampShades].s.value === 0) {
+    const cubeShadeData = data[AttributeNames.LampShades] as CubeShadeType
     mesh = getCubeMesh(
-      data[AttributeNames.LampShades].v.h.value,
-      data[AttributeNames.LampShades].v.w.value,
-      data[AttributeNames.LampShades].v.d.value,
-      (data[AttributeNames.LampShades] as any).v['Has Base'].s.value
+      cubeShadeData.v.h.value,
+      cubeShadeData.v.w.value,
+      cubeShadeData.v.d.value,
+      cubeShadeData.v['Has Base'].s.value
         ? {
             hBase: (data[AttributeNames.LampShades] as any).v['Has Base'].v['h-base'].value,
             baseAngle: (data[AttributeNames.LampShades] as any).v['Has Base'].v['baseAngle'].value,
           }
         : undefined,
-      data[AttributeNames.LampShades].v['max radius'].value,
-      data[AttributeNames.LampShades].v['edge radius'].value,
+      cubeShadeData.v['max radius'].value,
+      cubeShadeData.v['edge radius'].value,
       5 / 2 ** data[AttributeNames.GlobalGeometry].subDivisions.value,
-      getMaxExpression(data)
+      getMaxExpression(data),
+      data[AttributeNames.Pattern]['no-smoothing'].value
     )
   }
   if (data[AttributeNames.LampShades].s.value === 1) {
+    const sphereShadeData = data[AttributeNames.LampShades] as SphereShadeType
     mesh = getSphereMesh(
-      data[AttributeNames.LampShades].v.h.value,
-      data[AttributeNames.LampShades].v.r0.value,
-      data[AttributeNames.LampShades].v.r1.value,
-      data[AttributeNames.LampShades].v.r2.value
+      sphereShadeData.v.h.value,
+      sphereShadeData.v.r0.value,
+      sphereShadeData.v.r1.value,
+      sphereShadeData.v.r2.value
     )
   }
   if (data[AttributeNames.LampShades].s.value === 2) {
+    const hangingShadeData = data[AttributeNames.LampShades] as HangingShadeType
     mesh = getCubeMesh(
-      data[AttributeNames.LampShades].v.h.value,
-      data[AttributeNames.LampShades].v.inset.value,
-      data[AttributeNames.LampShades].v['h-base'].value,
-      data[AttributeNames.LampShades].v.w.value,
-      data[AttributeNames.LampShades].v.d.value,
+      hangingShadeData.v.h.value,
+      hangingShadeData.v.w.value,
+      hangingShadeData.v.d.value,
       undefined,
-      undefined,
-      data[AttributeNames.GlobalGeometry].expression.value
+      hangingShadeData.v.inset.value,
+      hangingShadeData.v['h-base'].value,
+      5 / 2 ** data[AttributeNames.GlobalGeometry].subDivisions.value,
+      getMaxExpression(data),
+      data[AttributeNames.Pattern]['no-smoothing'].value
     )
   }
 
   if (data[AttributeNames.LampShades].s.value === 3) {
+    const churchShadeData = data[AttributeNames.LampShades] as ChurchShadeType
     mesh = frauenKirche(
-      data[AttributeNames.LampShades].v.w.value,
-      Math.min(data[AttributeNames.LampShades].v['h-base'].value, data[AttributeNames.LampShades].v.h.value),
-      data[AttributeNames.LampShades].v.h.value - data[AttributeNames.LampShades].v['h-base'].value,
-      data[AttributeNames.LampShades].v['sides'].value,
-      data[AttributeNames.LampShades].v['alcove-percentage'].value,
-      data[AttributeNames.LampShades].v['alcove-expression'].value
+      churchShadeData.v.w.value,
+      churchShadeData.v['h-base'].value,
+      churchShadeData.v.h.value,
+      churchShadeData.v['sides'].value,
+      churchShadeData.v['alcove-percentage'].value,
+      churchShadeData.v['alcove-expression'].value
     )
   }
-
-  // for (let i = 0; i < data[AttributeNames.GlobalGeometry].subDivisions.value; i++)
-  //   mesh = (data[AttributeNames.GlobalGeometry].smoothing.value < 0.01 ? subdivide : catmullClark)(mesh) //, smoothing);
 
   return mesh
 }

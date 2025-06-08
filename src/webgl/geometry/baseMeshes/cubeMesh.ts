@@ -151,7 +151,8 @@ export const getCubeMesh = (
   maxRadius: number = 5,
   edgeRadius: number = 5,
   goalEdgeLength: number = MAX_BASE_GRID,
-  maxExpression: number = 1
+  maxExpression: number = 1,
+  noSmoothing?: boolean
 ): Mesh => {
   const vertices: V3[] = []
   const normals: V3[] = []
@@ -230,7 +231,7 @@ export const getCubeMesh = (
     }
   }
 
-  const { dYMin, getDMax } = getArcData(maxExpression, base?.baseAngle ?? 20)
+  const { dYMin, getDMax } = getArcData(noSmoothing ? undefined : maxExpression, (base?.baseAngle ?? 20) + 5)
 
   let localLoop: LoopType | null = null
 

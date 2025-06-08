@@ -20,6 +20,7 @@ export const LucernaLectoMesh: React.FC = () => {
       data[AttributeNames.GlobalGeometry],
       data[AttributeNames.Pattern]['expression'],
       data[AttributeNames.Pattern]['max-distance'],
+      data[AttributeNames.Pattern]['no-smoothing'],
       data[AttributeNames.LampShades],
     ])
     if (newGlobalGeometryString !== globalGeometryString) setGlobalGeometryString(newGlobalGeometryString)
