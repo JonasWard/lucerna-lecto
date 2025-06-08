@@ -20,7 +20,7 @@ export const LucernaLectoMesh: React.FC = () => {
       data[AttributeNames.GlobalGeometry],
       data[AttributeNames.Pattern]['expression'],
       data[AttributeNames.Pattern]['max-distance'],
-      data[AttributeNames.GlobalGeometry],
+      data[AttributeNames.LampShades],
     ])
     if (newGlobalGeometryString !== globalGeometryString) setGlobalGeometryString(newGlobalGeometryString)
     const newMainMethodsString = JSON.stringify([data[AttributeNames.Pattern]])
