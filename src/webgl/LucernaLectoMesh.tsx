@@ -16,7 +16,12 @@ export const LucernaLectoMesh: React.FC = () => {
   const [mainMethodsString, setMainMethodsString] = useState(JSON.stringify([data[AttributeNames.Pattern]]))
 
   useEffect(() => {
-    const newGlobalGeometryString = JSON.stringify([data[AttributeNames.GlobalGeometry]])
+    const newGlobalGeometryString = JSON.stringify([
+      data[AttributeNames.GlobalGeometry],
+      data[AttributeNames.Pattern]['expression'],
+      data[AttributeNames.Pattern]['max-distance'],
+      data[AttributeNames.GlobalGeometry],
+    ])
     if (newGlobalGeometryString !== globalGeometryString) setGlobalGeometryString(newGlobalGeometryString)
     const newMainMethodsString = JSON.stringify([data[AttributeNames.Pattern]])
     if (newMainMethodsString !== mainMethodsString) setMainMethodsString(newMainMethodsString)
