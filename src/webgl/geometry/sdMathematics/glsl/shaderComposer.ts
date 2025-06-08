@@ -105,7 +105,7 @@ void main() {
     return;
   }
   float d = sdMain(p * ${getScale(data)});
-  float colorD = max(0.0, min(1.0, d * ${1 / (getMaxExpression(data) ?? 1)}));
+  float colorD = max(0.0, min(1.0, d * ${getStringRepresentationOfValue(1 / (getMaxExpression(data) ?? 1.0))}));
   if (d * ${getStringRepresentationOfValue(data[AttributeNames.GlobalGeometry].expression.value)} > mD) {
     gl_FragColor = vec4(color, 1.0);
     return;
