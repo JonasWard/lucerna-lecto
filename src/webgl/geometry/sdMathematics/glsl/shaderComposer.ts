@@ -4,6 +4,7 @@ import { MainMethods } from 'src/modelDefinition/types/methodSemantics'
 import { getSdMethodNameForMethodName, ShaderMethods } from './sdMethods'
 import { contentForSwapYZ, getRotationMatrixData } from '../../helpers/sharedMethods'
 import { RotationNumbers } from '../../helpers/transformationContentType'
+import { getMaxExpression, getOffsetAndMultiplierForRemapFromUnitToArbitrary } from '../../helpers/remapRange'
 
 const getStringRepresentationOfValue = (value: number): string => value.toFixed(4)
 
@@ -52,15 +53,23 @@ export const getShaderDistanceMethod = (
  * Method that constructs the fragment shader
  * @param data - `Version0Type[AttributeNames.MainMethods]['v']`
  */
-export const getDistanceContentString = (
-  data: Version0Type[AttributeNames.Pattern][AttributeNames.MainMethods]['v']
-): string =>
-  [
+export const getDistanceContentString = (data: Version0Type[AttributeNames.Pattern]): string => {
+  const { offset, multiplier } = getOffsetAndMultiplierForRemapFromUnitToArbitrary([
+    data[AttributeNames.RemapRange].from.value,
+    data[AttributeNames.RemapRange].to.value,
+  ])
+
+  return [
     'varying float mD;',
     'varying vec3 p;',
-    ...[...new Set(data.map((d) => MainMethods[d.MainMethodEnum.value]))].map((method) => ShaderMethods[method]),
-    `float sdMain(vec3 v) { return ${getShaderDistanceMethod(data)}; }`,
+    ...[...new Set(data[AttributeNames.MainMethods]['v'].map((d) => MainMethods[d.MainMethodEnum.value]))].map(
+      (method) => ShaderMethods[method]
+    ),
+    `float sdMain(vec3 v) { return ${getStringRepresentationOfValue(offset)} + ${getStringRepresentationOfValue(
+      multiplier
+    )} * ${getShaderDistanceMethod(data[AttributeNames.MainMethods]['v'])}; }`,
   ].join('\n\n')
+}
 
 /**
  * Method to get vec3 values for the color
@@ -88,10 +97,19 @@ const getScale = (data: Version0Type): string =>
 export const getFragmentShader = (data: Version0Type): string => `const vec3 color = vec3(${getColorString(
   data[AttributeNames.Material].color as ColorType
 )});
-${getDistanceContentString(data[AttributeNames.Pattern][AttributeNames.MainMethods]['v'])}
+${getDistanceContentString(data[AttributeNames.Pattern])}
 
 void main() {
-  float d = max(0.0, min(mD,sdMain(p * ${getScale(data)})));
+  if (mD == 0.0) {
+    gl_FragColor = vec4(color, 1.0);
+    return;
+  }
+  float d = sdMain(p * ${getScale(data)});
+  float colorD = max(0.0, min(1.0, d * ${1 / (getMaxExpression(data) ?? 1)}));
+  if (d * ${getStringRepresentationOfValue(data[AttributeNames.GlobalGeometry].expression.value)} > mD) {
+    gl_FragColor = vec4(color, 1.0);
+    return;
+  }
   gl_FragColor = vec4(color * (1.0 - (d * ${getStringRepresentationOfValue(
     data[AttributeNames.Material]['color-expression'].value
   )})), 1.0);
@@ -102,13 +120,14 @@ void main() {
  * @param data - `Version0Type`
  */
 export const getVertexShader = (data: Version0Type): string => `attribute float maxDistance;
-${getDistanceContentString(data[AttributeNames.Pattern][AttributeNames.MainMethods]['v'])}
+${getDistanceContentString(data[AttributeNames.Pattern])}
 
 void main() { 
   mD = maxDistance;
-  vec3 transformed = position + normal * max(0.0, min(mD,sdMain(position * ${getScale(
+  vec3 transformed = position + normal * max(0.0, min(mD, sdMain(position * ${getScale(
     data
   )}) * ${getStringRepresentationOfValue(data[AttributeNames.GlobalGeometry].expression.value)}));
   gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed * ${getSwapYZMatrix()}, 1.0);
   p = position;
 }`
+
