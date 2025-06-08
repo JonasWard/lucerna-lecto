@@ -6,6 +6,7 @@ import { getCubeMesh } from './baseMeshes/cubeMesh'
 import { Mesh } from './mesh/type'
 import { getSphereMesh } from './baseMeshes/ellipseMesh'
 import { frauenKirche } from './baseMeshes/frauenKirche'
+import { getMaxExpression } from './helpers/remapRange'
 
 const size = 5
 
@@ -57,9 +58,7 @@ export const getMesh = (data: Version0Type): Mesh => {
       data[AttributeNames.LampShades].v['max radius'].value,
       data[AttributeNames.LampShades].v['edge radius'].value,
       5 / 2 ** data[AttributeNames.GlobalGeometry].subDivisions.value,
-      data[AttributeNames.GlobalGeometry]['max-distance']?.v?.['max-distance overwrite']?.value
-        ? data[AttributeNames.GlobalGeometry]['max-distance']?.v?.['max-distance overwrite']?.value
-        : data[AttributeNames.GlobalGeometry].expression.value
+      getMaxExpression(data)
     )
   }
   if (data[AttributeNames.LampShades].s.value === 1) {

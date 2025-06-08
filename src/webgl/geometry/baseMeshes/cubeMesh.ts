@@ -158,7 +158,8 @@ export const getCubeMesh = (
   const faces: number[][] = []
   const maxDistances: number[] = []
 
-  const [rMinRaw, rMax] = [maxRadius, edgeRadius].sort((a, b) => a - b)
+  const rMinRaw = Math.min(maxRadius, edgeRadius)
+  const rMax = Math.max(rMinRaw + maxExpression, Math.max(maxRadius, edgeRadius))
   const r0 = Math.min(rMinRaw, Math.max(h, w) * 0.5)
 
   const w0 = w - 2 * r0

@@ -23,7 +23,8 @@
     "@types/react-dom": "^18.3",
     "@vitejs/plugin-react": "^4.3.2",
     "typescript": "^5",
-    "vite": "^5.3.1"
+    "vite": "^5.3.1",
+    "@types/bun": "latest"
   },
   "scripts": {
     "predeploy": "bun run build",
@@ -49,5 +50,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "module": "src/index.tsx"
 }

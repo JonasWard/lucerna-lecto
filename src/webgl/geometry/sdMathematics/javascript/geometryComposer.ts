@@ -3,6 +3,7 @@ import { LocalTransformType, Version0Type } from 'src/modelDefinition/types/vers
 import { JavascriptMethods } from './sdMethods'
 import { contentForSwapYZ, getRotationMatrixData } from '../../helpers/sharedMethods'
 import { MainMethods } from 'src/modelDefinition/types/methodSemantics'
+import { getOffsetAndMultiplierForRemapFromUnitToArbitrary } from '../../helpers/remapRange'
 
 const getTranslatedVector = (data: LocalTransformType): ((v: [number, number, number]) => [number, number, number]) => {
   const dX = data[AttributeNames.X].value
@@ -75,6 +76,11 @@ export const getGeometryDistanceMethod = (
 export const getBumpedVector = (
   data: Version0Type
 ): ((p: [number, number, number], n: [number, number, number], mD: number) => [number, number, number]) => {
+  const { offset, multiplier } = getOffsetAndMultiplierForRemapFromUnitToArbitrary([
+    data[AttributeNames.Pattern][AttributeNames.RemapRange].from.value,
+    data[AttributeNames.Pattern][AttributeNames.RemapRange].to.value,
+  ])
+
   const distanceMethod = getGeometryDistanceMethod(data[AttributeNames.Pattern][AttributeNames.MainMethods]['v'])
   const verticalScaleMethod = getVerticalScaledVector(
     data[AttributeNames.Pattern][AttributeNames.ExpressionScale].value
@@ -89,6 +95,12 @@ export const getBumpedVector = (
     ] as [number, number, number]
   return (p, n, mD) =>
     transformToXZY(
-      addVector(p, scaleVector(n, Math.max(0.0, Math.min(mD, distanceMethod(verticalScaleMethod(p)) * expression))))
+      addVector(
+        p,
+        scaleVector(
+          n,
+          Math.max(0.0, Math.min(mD, (offset + multiplier * distanceMethod(verticalScaleMethod(p))) * expression))
+        )
+      )
     )
 }
