@@ -27,7 +27,7 @@ const getTranslationData = (data: Version0Type[AttributeNames.Pattern][Attribute
     const translationVector = getTranslationVector(data[AttributeNames.LocalTransformationOrNot].v)
     const rotationMatrix = getRotationMatrix(data[AttributeNames.LocalTransformationOrNot].v)
 
-    return `(v - ${translationVector}) * ${rotationMatrix} + ${translationVector}`
+    return `v * ${rotationMatrix} + ${translationVector}`
   }
   return 'v'
 }
@@ -106,7 +106,7 @@ void main() {
   }
   float d = sdMain(p * ${getScale(data)});
   float colorD = max(0.0, min(1.0, d * ${getStringRepresentationOfValue(1 / (getMaxExpression(data) ?? 1.0))}));
-  if (d * ${getStringRepresentationOfValue(data[AttributeNames.GlobalGeometry].expression.value)} > mD) {
+  if (d * ${getStringRepresentationOfValue(data[AttributeNames.Pattern].expression.value)} > mD) {
     gl_FragColor = vec4(color, 1.0);
     return;
   }
@@ -126,7 +126,7 @@ void main() {
   mD = maxDistance;
   vec3 transformed = position + normal * max(0.0, min(mD, sdMain(position * ${getScale(
     data
-  )}) * ${getStringRepresentationOfValue(data[AttributeNames.GlobalGeometry].expression.value)}));
+  )}) * ${getStringRepresentationOfValue(data[AttributeNames.Pattern].expression.value)}));
   gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed * ${getSwapYZMatrix()}, 1.0);
   p = position;
 }`

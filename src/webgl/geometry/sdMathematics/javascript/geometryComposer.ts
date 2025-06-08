@@ -43,10 +43,9 @@ const getTransformedVector = (
   data: Version0Type[AttributeNames.Pattern][AttributeNames.MainMethods]['v'][0]
 ): ((v: [number, number, number]) => [number, number, number]) => {
   if (data[AttributeNames.LocalTransformationOrNot].s.value) {
-    const toNegative = getInvereTranslatedVector(data[AttributeNames.LocalTransformationOrNot].v)
     const toPositive = getTranslatedVector(data[AttributeNames.LocalTransformationOrNot].v)
     const rotate = getRotatedVector(data[AttributeNames.LocalTransformationOrNot].v)
-    return (v) => toPositive(rotate(toNegative(v)))
+    return (v) => toPositive(rotate(v))
   }
   return (v) => v
 }
@@ -85,7 +84,7 @@ export const getBumpedVector = (
   const verticalScaleMethod = getVerticalScaledVector(
     data[AttributeNames.Pattern][AttributeNames.ExpressionScale].value
   )
-  const expression = data[AttributeNames.GlobalGeometry].expression.value
+  const expression = data[AttributeNames.Pattern].expression.value
   const rotationMatrix = [contentForSwapYZ.slice(0, 3), contentForSwapYZ.slice(3, 6), contentForSwapYZ.slice(6, 9)]
   const transformToXZY = (v: [number, number, number]) =>
     [
